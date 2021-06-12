@@ -18,7 +18,7 @@ function parseMidi(file) {
   reader.readAsArrayBuffer(file)
 }
 
-async function loadMidi(index){
+async function loadMidi(index) {
   const midi = await Midi.fromUrl(songs[index][0]);
   currentMidi = midi.toJSON();
   currentMidi.duration = midi.duration;

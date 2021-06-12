@@ -96,7 +96,7 @@ function imgaeWithinAR(img, ar, x, y, w, h) {
 let scene = 0,
   sb = 0;
 
-const scenes = [s0,s1,s2];
+const scenes = [s0, s1, s2, s3, s4];
 
 function drawCanvas(t) {
   ctx.imageSmoothingQuality = "high";
