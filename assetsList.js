@@ -1,3 +1,6 @@
+const background = new Image();
+background.src = 'assets/background.png';
+
 const uwu = new Image();
 uwu.src = 'assets/uwu.png';
 
