@@ -89,14 +89,14 @@ function callWithinAR(x, y, width, height, ar, callback) {
   }
 }
 
-function imgaeWithinAR(img,ar,x,y,w,h){
-  callWithinAR(x,y,w,h,ar,(x,y,w,h)=>ctx.drawImage(img,x,y,w,h));
+function imgaeWithinAR(img, ar, x, y, w, h) {
+  callWithinAR(x, y, w, h, ar, (x, y, w, h) => ctx.drawImage(img, x, y, w, h));
 }
 
 let scene = 0,
   sb = 0;
 
-const scenes = [s0];
+const scenes = [s0,s1,s2];
 
 function drawCanvas(t) {
   ctx.imageSmoothingQuality = "high";
@@ -130,10 +130,8 @@ window.onresize = () => {
 }
 
 window.onmousemove = (event) => {
-  if(mouseIsPressed) {
-    mouseX = event.clientX;
-    mouseY = event.clientY;
-  }
+  mouseX = event.clientX;
+  mouseY = event.clientY;
 }
 
 window.onmouseup = (event) => {
