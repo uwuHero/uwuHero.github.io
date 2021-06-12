@@ -3,36 +3,47 @@ let trackScroll = 0;
 function drawTrackList(x, y, w, h) {
   if(mouseX < x + w * 0.1) {
 
-  }
-  if(mouseY - y < 0.2 * h) {
+  } else if(mouseY - y < 0.2 * h) {
     trackScroll += (0.2 - (mouseY - y) / h) / 8;
-  }
-  if(mouseY - y > 0.8 * h) {
+  } else if(mouseY - y > 0.8 * h) {
     trackScroll -= ((mouseY - y) / h - 0.8) / 8;
   }
   if(trackScroll > 0) {
     trackScroll = 0;
   }
-  if(trackScroll < -(songs.length - 0.5) * 0.1) {
-    trackScroll = -(songs.length - 0.5) * 0.1;
+  if(trackScroll < 0.5 - (songs.length + 0.5) * 0.1) {
+    trackScroll = 0.5 - (songs.length + 0.5) * 0.1;
   }
 
   ctx.drawImage(background, x, y, w, h);
   for(let i = 0; i < songs.length; i++) {
-    if(y + w * 0.1 * (i + 1) + trackScroll * h < y ||
-      y + w * 0.1 * (i + 1) + trackScroll * h > y + h) {
+    if(y + w * 0.1 * (i + 1) + trackScroll * w < y ||
+      y + w * 0.1 * (i + 1) + trackScroll * w > y + h) {
       continue;
     }
     button(
-      x + w * 0.1,
-      y + w * 0.1 * (i + 1) + trackScroll * h,
+      (x + w * 0.1) >> 0,
+      (y + w * 0.1 * (i + 1) + trackScroll * w) >> 0,
       w * 0.5,
       w * 0.08,
       a => {
         currentSong = i;
-        sb = 3
+        loadMidi(currentSong);
+        sb = 3;
       }, uwu2, uwu2b);
+    ctx.fillStyle = '#fffa';
+    ctx.fillRect(
+      (x + w * 0.1) >> 0,
+      (y + w * 0.1 * (i + 1) + trackScroll * w) >> 0,
+      w * 0.5,
+      w * 0.08);
+    ctx.fillStyle = '#000';
+    ctx.font = `${w*0.04>>0}px sans-serif`;
+    ctx.fillText(songs[i][1],
+      (x + w * 0.11) >> 0,
+      (y + w * 0.1 * (i + 1.6) + trackScroll * w) >> 0);
   }
+  ctx.fillStyle = '#000';
   ctx.fillRect(0, y + h, w, h);
   ctx.drawImage(overlay, x, y, w, h);
   button(

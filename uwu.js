@@ -145,6 +145,16 @@ window.onmouseup = (event) => {
 window.onmouseleave = (event) => {
   mouseIsPressed = false;
   last = true;
+  mouseX = -1;
+  mouseY = -1;
+}
+
+
+window.onmouseout = (event) => {
+  mouseIsPressed = false;
+  last = true;
+  mouseX = -1;
+  mouseY = -1;
 }
 
 let ltouch = [0, 0];
