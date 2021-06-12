@@ -1,0 +1,192 @@
+let dev = true;
+let version = "0.0.1";
+
+const colors = ["white", "grey", "#151515", "white", "blue"];
+
+
+//initialize canvas
+const c = document.getElementById("canvas");
+const ctx = c.getContext("2d", {
+  alpha: false
+});
+c.style.backgroundColor = "red";
+c.width = window.innerWidth;
+c.height = window.innerHeight;
+
+//initialize variables and constants
+let w = c.width,
+  h = c.height,
+  last = true,
+  mouseIsPressed = false,
+  FPSCounter = false;
+
+let mouseX = 0,
+  mouseY = 0;
+
+/**
+ * button - draws a rectangular button with an image & hover-image
+ *
+ * @param  {type} x        x
+ * @param  {type} y        y
+ * @param  {type} w        width
+ * @param  {type} h        height
+ * @param  {type} callback runs when clicked
+ * @param  {type} img      main image
+ * @param  {type} imgb     hover-image
+ */
+function button(x, y, w, h, callback, img, imgb) {
+  if(img) {
+    if(mouseX > x &&
+      mouseX < x + w &&
+      mouseY > y &&
+      mouseY < y + h) {
+      document.body.style.cursor = 'pointer';
+      if(!last && mouseIsPressed) {
+        callback();
+        last = true;
+      }
+      ctx.drawImage(imgb, x >> 0, y >> 0, w >> 0, h >> 0);
+    } else {
+      ctx.drawImage(img, x >> 0, y >> 0, w >> 0, h >> 0);
+    }
+    return;
+  }
+
+  if(mouseX > x &&
+    mouseX < x + w &&
+    mouseY > y &&
+    mouseY < y + h) {
+    ctx.fillStyle = "rgba(0,0,0,0.3)";
+    document.body.style.cursor = 'pointer';
+    if(!last && mouseIsPressed) {
+      callback();
+      last = true;
+    }
+    ctx.fillRect(x >> 0, y >> 0, w >> 0, h >> 0);
+  } else if(!img) {
+    ctx.fillStyle = colors[2];
+    ctx.fillRect(x >> 0, y >> 0, w >> 0, h >> 0);
+  }
+}
+
+/**
+ * callWithinAR - Calls the callback function with parameters for a rect of the specified aspect ratio within the rect provided
+ *
+ * @param  {number} x        x
+ * @param  {number} y        y
+ * @param  {number} width    width
+ * @param  {number} height   height
+ * @param  {number} ar       aspect ratio
+ * @param  {function} callback callback
+ */
+function callWithinAR(x, y, width, height, ar, callback) {
+  if(height * ar < width) {
+    //wide
+    callback(x + width / 2 - height / 2 * ar >> 0, y >> 0, height * ar >> 0, height >> 0);
+  } else {
+    //tall
+    callback(x >> 0, y + height / 2 - width / 2 / ar >> 0, width >> 0, width / ar >> 0);
+  }
+}
+
+function imgaeWithinAR(img,ar,x,y,w,h){
+  callWithinAR(x,y,w,h,ar,(x,y,w,h)=>ctx.drawImage(img,x,y,w,h));
+}
+
+let scene = 0,
+  sb = 0;
+
+const scenes = [s0];
+
+function drawCanvas(t) {
+  ctx.imageSmoothingQuality = "high";
+  document.body.style.cursor = 'default';
+  ctx.fillStyle = "#242729";
+  ctx.fillRect(0, 0, w, h);
+
+  scenes[scene]();
+  scene = sb;
+
+  if(dev) {
+    ctx.fillStyle = 'white';
+    ctx.font = '20px sans-serif';
+    ctx.textAlign = 'left';
+    //ctx.fillText((1000/(t-lt)>>0)+" FPS",5,20);
+  }
+  lt = t;
+
+  if(t) {
+    window.requestAnimationFrame(drawCanvas);
+  }
+}
+window.requestAnimationFrame(drawCanvas);
+
+//event listeners
+window.onresize = () => {
+  c.width = window.innerWidth;
+  c.height = window.innerHeight;
+  w = c.width;
+  h = c.height;
+}
+
+window.onmousemove = (event) => {
+  if(mouseIsPressed) {
+    mouseX = event.clientX;
+    mouseY = event.clientY;
+  }
+}
+
+window.onmouseup = (event) => {
+  mouseIsPressed = true;
+  last = false;
+  drawCanvas(false);
+  mouseIsPressed = false;
+  last = true;
+}
+
+window.onmouseleave = (event) => {
+  mouseIsPressed = false;
+  last = true;
+}
+
+let ltouch = [0, 0];
+window.ontouchstart = (event) => {
+  mouseX = event.touches[0].clientX;
+  mouseY = event.touches[0].clientY;
+  ltouch = [mouseX, mouseY];
+  mouseIsPressed = true;
+}
+
+window.ontouchend = (event) => {
+  mouseIsPressed = true;
+  last = false;
+  drawCanvas(false);
+  mouseIsPressed = false;
+  last = true;
+  mouseX = -1;
+  mouseY = -1;
+}
+
+window.ontouchmove = (event) => {
+  if(mouseIsPressed) {
+    mouseX = event.touches[0].clientX;
+    mouseY = event.touches[0].clientY;
+  }
+}
+
+let keys = [];
+
+document.onkeydown = (event) => {
+  keys[event.code] = true;
+}
+
+document.onkeyup = (event) => {
+  keys[event.code] = true;
+}
+
+document.addEventListener('contextmenu', event => event.preventDefault());
+
+// special dev settings
+if(dev) {
+  FPSCounter = true;
+}
