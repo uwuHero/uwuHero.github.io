@@ -1,4 +1,11 @@
-let lanes = 5;
+let frets = 5;
+let minimumSustain = 0.5;
+let ignoreGap = 1;
+let maxBPS = 30;
+let stripSustain = 1;
+let maxNotes = 2;
+let extendedSustains = true;
+let noteTolerance = 0.15;
 
 function drawSettings(x, y, w, h) {
   ctx.drawImage(background, x, y, w, h);

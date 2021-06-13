@@ -1,7 +1,7 @@
 let dev = true;
 let version = "0.0.1";
 
-const colors = ["white", "grey", "#151515", "white", "blue"];
+const colors = ["#242729", "grey", "#151515", "white", "blue"];
 
 
 //initialize canvas
@@ -101,7 +101,7 @@ const scenes = [s0, s1, s2, s3, s4];
 function drawCanvas(t) {
   ctx.imageSmoothingQuality = "high";
   document.body.style.cursor = 'default';
-  ctx.fillStyle = "#242729";
+  ctx.fillStyle = colors[0];
   ctx.fillRect(0, 0, w, h);
 
   scenes[scene]();
