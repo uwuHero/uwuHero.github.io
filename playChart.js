@@ -162,6 +162,11 @@ function drawPlayChart(x, y, w, h) {
   ctx.fillStyle = '#000';
   ctx.fillRect(x, y, w, h);
 
+  ctx.fillStyle = '#fff';
+  for(let i=0;i<=frets;i++){
+    ctx.fillRect(x+w/3+i*w/frets/3,y,1,h);
+  }
+
   currentTime = Date.now() - startTime;
 
   hitNotes();
