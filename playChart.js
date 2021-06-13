@@ -107,12 +107,12 @@ function hitNotes() {
   //parse keys and detect hits & misses
 }
 
-function playSong(track){
-  for(let i=0;i<track.notes.length;i++){
-    if(track.notes[i].time*1000 < lastTone){
+function playSong(track) {
+  for(let i = 0; i < track.notes.length; i++) {
+    if(track.notes[i].time * 1000 < lastTone) {
       continue;
     }
-    if(track.notes[i].time*1000 >= currentTime){
+    if(track.notes[i].time * 1000 >= currentTime) {
       return;
     }
     playSound(track.notes[i].midi, track.notes[i].duration, track.notes[i].velocity, track.instrument.family, track.instrument.name);
@@ -135,9 +135,9 @@ function drawPlayChart(x, y, w, h) {
   }
 
   ctx.fillStyle = '#08f';
-  ctx.fillRect(x+w/3,y+h*0.9-1,w/3,2);
+  ctx.fillRect(x + w / 3, y + h * 0.9 - 1, w / 3, 2);
 
-  for(let i=0;i<songs[currentSong][2].tracks.length;i++){
+  for(let i = 0; i < songs[currentSong][2].tracks.length; i++) {
     playSong(songs[currentSong][2].tracks[i]);
   }
 
