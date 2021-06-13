@@ -25,10 +25,13 @@ function drawChartSettings(x, y, w, h) {
 
     let mins = 0;
     for(let i = 0; i < cSong.tracks.length; i++) {
-      if(cSong.tracks[i].instrument.percussion){mins++;continue;}
+      if(cSong.tracks[i].instrument.percussion) {
+        mins++;
+        continue;
+      }
       button(
         (x + w * 0.1) >> 0,
-        (y + w * 0.1 * ((i-mins) + 1) + instrumentScroll * w) >> 0,
+        (y + w * 0.1 * ((i - mins) + 1) + instrumentScroll * w) >> 0,
         w * 0.5,
         w * 0.08,
         a => {
@@ -37,20 +40,13 @@ function drawChartSettings(x, y, w, h) {
           startSong();
           sb = 4;
         }, paper, paper);
-        /*
-      ctx.fillStyle = '#fffa';
-      ctx.fillRect(
-        (x + w * 0.1) >> 0,
-        (y + w * 0.1 * (i + 1) + instrumentScroll * w) >> 0,
-        w * 0.5,
-        w * 0.08);
-        */
+
       ctx.fillStyle = '#000';
       let txt = (i > 0 && cSong.tracks[i - 1].instrument.name == cSong.tracks[i].instrument.name ? (cSong.tracks[i].notes[0].midi < 60 ? 'bass ' : '') : '') + (cSong.tracks.length > 6 ? cSong.tracks[i].instrument.name : cSong.tracks[i].instrument.family);
       ctx.font = `${(txt.length>25?txt.length>33?w*0.02:w*0.03:w*0.04)>>0}px sans-serif`;
-      ctx.fillText(' '+txt,
+      ctx.fillText(' ' + txt,
         (x + w * 0.11) >> 0,
-        (y + w * 0.1 * ((i-mins) + (txt.length > 25 ? txt.length > 33 ? 1.5 : 1.55 : 1.6)) + instrumentScroll * w) >> 0);
+        (y + w * 0.1 * ((i - mins) + (txt.length > 25 ? txt.length > 33 ? 1.5 : 1.55 : 1.6)) + instrumentScroll * w) >> 0);
     }
   } else {
     ctx.drawImage(background, x, y, w, h);
