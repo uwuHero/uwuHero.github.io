@@ -15,6 +15,10 @@ function drawTrackList(x, y, w, h) {
     trackScroll = 0.5 - (songs.length + 0.5) * 0.1;
   }
 
+  if(songs.length < 5) {
+    trackScroll = 0.02;
+  }
+
   ctx.drawImage(background, x, y, w, h);
   for(let i = 0; i < songs.length; i++) {
     if(y + w * 0.1 * (i + 1) + trackScroll * w < y ||

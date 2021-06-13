@@ -6,6 +6,15 @@ let stripSustain = 1;
 let maxNotes = 2;
 let extendedSustains = true;
 let noteTolerance = 0.15;
+let startingWait = 2;
+
+let keyBindings = {
+  select: [13],
+  up: [38],
+  down: [40],
+  back: [8, 27],
+  notes: [90, 88, 67, 86, 66, 78, 77, 188, 190, 191]
+};
 
 function drawSettings(x, y, w, h) {
   ctx.drawImage(background, x, y, w, h);

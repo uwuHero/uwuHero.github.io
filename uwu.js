@@ -107,6 +107,8 @@ function drawCanvas(t) {
   scenes[scene]();
   scene = sb;
 
+  keys = [];
+
   if(dev) {
     ctx.fillStyle = 'white';
     ctx.font = '20px sans-serif';
@@ -185,11 +187,11 @@ window.ontouchmove = (event) => {
 let keys = [];
 
 document.onkeydown = (event) => {
-  keys[event.code] = true;
+  keys.push([event.keyCode, true, Date.now()]);
 }
 
 document.onkeyup = (event) => {
-  keys[event.code] = true;
+  keys.push([event.keyCode, false, Date.now()]);
 }
 
 document.addEventListener('contextmenu', event => event.preventDefault());

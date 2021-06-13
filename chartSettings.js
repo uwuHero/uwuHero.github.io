@@ -3,7 +3,7 @@ let instrumentScroll = 0.02;
 function drawChartSettings(x, y, w, h) {
   let cSong = songs[currentSong][2];
 
-  if(cSong){
+  if(cSong) {
     if(mouseX < x + w * 0.1) {
 
     } else if(mouseY - y < 0.2 * h) {
@@ -17,13 +17,13 @@ function drawChartSettings(x, y, w, h) {
     if(instrumentScroll < 0.5 - (cSong.tracks.length + 0.5) * 0.1) {
       instrumentScroll = 0.5 - (cSong.tracks.length + 0.5) * 0.1;
     }
-    if(cSong.tracks.length < 5){
+    if(cSong.tracks.length < 5) {
       instrumentScroll = 0.02;
     }
 
     ctx.drawImage(background, x, y, w, h);
 
-    for(let i=0;i<cSong.tracks.length;i++){
+    for(let i = 0; i < cSong.tracks.length; i++) {
       button(
         (x + w * 0.1) >> 0,
         (y + w * 0.1 * (i + 1) + instrumentScroll * w) >> 0,
@@ -31,24 +31,24 @@ function drawChartSettings(x, y, w, h) {
         w * 0.08,
         a => {
           songs[currentSong][3] = chartSong(cSong, i);
+          startSong();
           sb = 4;
         }, uwu2, uwu2b);
 
-        ctx.fillStyle = '#fffa';
-        ctx.fillRect(
-          (x + w * 0.1) >> 0,
-          (y + w * 0.1 * (i + 1) + instrumentScroll * w) >> 0,
-          w * 0.5,
-          w * 0.08);
-        ctx.fillStyle = '#000';
-        let txt = (cSong.tracks[i].notes[0].midi<60?'bass ':'')+(cSong.tracks.length>6?cSong.tracks[i].instrument.name:cSong.tracks[i].instrument.family);
-        ctx.font = `${(txt.length>25?txt.length>33?w*0.02:w*0.03:w*0.04)>>0}px sans-serif`;
-        ctx.fillText(txt,
-          (x + w * 0.11) >> 0,
-          (y + w * 0.1 * (i + (txt.length > 25 ? txt.length > 33 ? 1.5 : 1.55 : 1.6)) + instrumentScroll * w) >> 0);
+      ctx.fillStyle = '#fffa';
+      ctx.fillRect(
+        (x + w * 0.1) >> 0,
+        (y + w * 0.1 * (i + 1) + instrumentScroll * w) >> 0,
+        w * 0.5,
+        w * 0.08);
+      ctx.fillStyle = '#000';
+      let txt = (i > 0 && cSong.tracks[i - 1].instrument.name == cSong.tracks[i].instrument.name ? (cSong.tracks[i].notes[0].midi < 60 ? 'bass ' : '') : '') + (cSong.tracks.length > 6 ? cSong.tracks[i].instrument.name : cSong.tracks[i].instrument.family);
+      ctx.font = `${(txt.length>25?txt.length>33?w*0.02:w*0.03:w*0.04)>>0}px sans-serif`;
+      ctx.fillText(txt,
+        (x + w * 0.11) >> 0,
+        (y + w * 0.1 * (i + (txt.length > 25 ? txt.length > 33 ? 1.5 : 1.55 : 1.6)) + instrumentScroll * w) >> 0);
     }
-  }
-  else{
+  } else {
     ctx.drawImage(background, x, y, w, h);
   }
 

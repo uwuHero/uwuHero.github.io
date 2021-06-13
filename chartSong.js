@@ -43,8 +43,7 @@ function chartSong(currentMidi, track) {
   let chart = {
     chart: [],
     ppq: currentMidi.header.ppq,
-    speed: ((4 / 60) * currentMidi.header.ppq) >> 0,
-    time: -0.1,
+    //speed: ((4 / 60) * currentMidi.header.ppq) >> 0,
     leadingSeconds: 2,
   };
 
@@ -57,14 +56,10 @@ function chartSong(currentMidi, track) {
   }
 
   let distinctNotes = [];
-  let songLength = 0;
   for(let note = 0; note < currentMidi.tracks[track].notes.length; note++) {
     let midValue = currentMidi.tracks[track].notes[note].hasOwnProperty('altmidi') ? currentMidi.tracks[track].notes[note].altmidi : currentMidi.tracks[track].notes[note].midi;
     if(distinctNotes.indexOf(midValue) < 0) {
       distinctNotes.push(midValue);
-    }
-    if(currentMidi.tracks[track].notes[note].ticks > songLength) {
-      songLength = currentMidi.tracks[track].notes[note].ticks;
     }
   }
   distinctNotes.sort((a, b) => a - b);
@@ -84,9 +79,6 @@ function chartSong(currentMidi, track) {
       0, //9
       note //10
     ]);
-    if(currentMidi.tracks[track].notes[note].ticks > songLength) {
-      songLength = currentMidi.tracks[track].notes[note].ticks;
-    }
   }
 
   unChartedNotes.sort((a, b) => a[0] + a[8] / 128 - b[0] - b[8] / 128);
@@ -290,7 +282,8 @@ function chartSong(currentMidi, track) {
       }
       unChartedNotes[i][2] = duration;
     }
-    chart.chart.push([unChartedNotes[i][0], chartedNotes[i], duration]);
+    //chart.chart.push([unChartedNotes[i][0], chartedNotes[i], duration]);
+    chart.chart.push([unChartedNotes[i][3], chartedNotes[i], unChartedNotes[i][7]]);
   }
   return chart;
 }
