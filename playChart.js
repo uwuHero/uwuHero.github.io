@@ -8,6 +8,8 @@ let hyperSpeed = 2;
 
 let holdingKeys = [];
 
+let fretColors = ['#00ff00', '#ff0000', '#ffff00', '#0088ff', '#ff8800', '#ff00ff', '#00ffff', '#ff00ff', '#ff8800', '#0088ff', '#ffff00', '#ff0000', '#00ff00'];
+
 function startSong() {
   startTime = Date.now() + 1000 * startingWait;
   for(let i = 0; i < frets; i++) {
@@ -104,6 +106,7 @@ function drawNoteTopDown(chart, note, x, y, w, h) {
   if(yp < -w / 18 / frets || yp > h + w / 18 / frets) {
     return;
   }
+  ctx.fillStyle = fretColors[note[1]];
   ctx.fillRect(
     x + w / 3 + (note[1] + 0.5) * w / 3 / frets - w / 6 / frets,
     y + yp - w / 18 / frets,
@@ -163,8 +166,8 @@ function drawPlayChart(x, y, w, h) {
   ctx.fillRect(x, y, w, h);
 
   ctx.fillStyle = '#fff';
-  for(let i=0;i<=frets;i++){
-    ctx.fillRect(x+w/3+i*w/frets/3,y,1,h);
+  for(let i = 0; i <= frets; i++) {
+    ctx.fillRect(x + w / 3 + i * w / frets / 3, y, 1, h);
   }
 
   currentTime = Date.now() - startTime;
@@ -180,9 +183,9 @@ function drawPlayChart(x, y, w, h) {
   ctx.fillStyle = '#08f';
   ctx.fillRect(x + w / 3, y + h * 0.9 - 1, w / 3, 2);
 
-  ctx.fillStyle = '#fff';
   for(let i = 0; i < frets; i++) {
     if(holdingKeys[i]) {
+      ctx.fillStyle = fretColors[i];
       ctx.fillRect(
         x + w / 3 + (i + 0.5) * w / 3 / frets - w / 6 / frets,
         y + 0.9 * h - w / 18 / frets,

@@ -61,7 +61,7 @@ function drawChartSettings(x, y, w, h) {
     x + h * 0.05,
     y + h * 0.05,
     w * 0.2, h * 0.1,
-    a => sb = 2, uwu2, uwu2b);
+    a => sb = 2, backImg, backImgb);
 }
 
 function s3() {

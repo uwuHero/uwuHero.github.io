@@ -22,7 +22,7 @@ function parseMidi(file) {
 }
 
 async function loadMidi(index, track) {
-  if(!songs[index][2]){
+  if(!songs[index][2]) {
     const midi = await Midi.fromUrl(songs[index][0]);
     songs[index][2] = midi.toJSON();
     songs[index][2].duration = midi.duration;
@@ -35,9 +35,9 @@ async function loadMidi(index, track) {
       songs[index][2].tracks[track].instrument.percussion = midi.tracks[track].instrument.percussion;
     }
 
-    for(let i=songs[index][2].tracks.length-1;i>=0;i--){
-      if(songs[index][2].tracks[i].notes.length===0){
-        songs[index][2].tracks.splice(i,1);
+    for(let i = songs[index][2].tracks.length - 1; i >= 0; i--) {
+      if(songs[index][2].tracks[i].notes.length === 0) {
+        songs[index][2].tracks.splice(i, 1);
       }
     }
   }

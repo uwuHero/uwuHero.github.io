@@ -50,11 +50,12 @@ function drawTrackList(x, y, w, h) {
   ctx.fillStyle = colors[0];
   ctx.fillRect(0, y + h, w, h);
   ctx.drawImage(overlay, x, y, w, h);
+
   button(
     x + h * 0.05,
     y + h * 0.05,
     w * 0.2, h * 0.1,
-    a => sb = 0, uwu2, uwu2b);
+    a => sb = 0, backImg, backImgb);
 }
 
 function s2() {

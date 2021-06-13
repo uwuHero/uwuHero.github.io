@@ -106,7 +106,7 @@ function drawCanvas(t) {
 
   scenes[scene]();
   scene = sb;
-  if(scene != 4){
+  if(scene != 4) {
     keys = [];
   }
 
@@ -188,6 +188,10 @@ window.ontouchmove = (event) => {
 let keys = [];
 
 document.onkeydown = (event) => {
+  if(binding>=0) {
+    keyBindings.notes[binding] = event.keyCode;
+    binding = -1;
+  }
   keys.push([event.keyCode, true, Date.now()]);
 }
 
