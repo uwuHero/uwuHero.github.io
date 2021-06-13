@@ -1,7 +1,7 @@
 let currentSong = 0;
 let songs = [
   ['songs/Megalovania.mid', 'Megalovania'],
-  ['songs/C418.mid', 'C418 Sweeden'],
+  ['songs/C418.mid', 'C418 Sweden'],
   ['songs/Canon_in_D.mid', 'Canon in D'],
   ['songs/Moonlight_Sonata_3rd_Movement.mid', 'Moonlight Sonata 3rd Movement'],
 
