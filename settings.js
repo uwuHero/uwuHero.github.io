@@ -16,7 +16,7 @@ let keyBindings = {
   up: [38],
   down: [40],
   back: [8, 27],
-  notes: [90, 88, 67, 86, 66, 78, 77, 188, 190, 191,-1,-1,-1,-1,-1,-1]
+  notes: [90, 88, 67, 86, 66, 78, 77, 188, 190, 191, -1, -1, -1, -1, -1, -1]
 };
 
 let binding = -1;
@@ -39,7 +39,7 @@ function drawSettings(x, y, w, h) {
     y + h * 0.3 + w * 0.01,
     w * 0.04, w * 0.04,
     a => {
-      frets = Math.max(1, frets - 1)
+      frets = Math.max(2, frets - 1)
     }, minus, minus);
 
   button(
@@ -62,10 +62,13 @@ function drawSettings(x, y, w, h) {
       x + w * 0.05 + w * 0.98 * i / frets - w * 0.04,
       y + h * 0.5 + w * 0.01,
       w * 0.08, w * 0.08,
-      a => {binding = i;keyBindings.notes[i]=-1;}, minus, minus);
+      a => {
+        binding = i;
+        keyBindings.notes[i] = -1;
+      }, minus, minus);
 
     ctx.fillText(keyBindings.notes[i],
-      x + w * 0.05 + w * 0.98 * i / frets-h*0.05,
+      x + w * 0.05 + w * 0.98 * i / frets - h * 0.05,
       y + h * 0.75);
   }
 }

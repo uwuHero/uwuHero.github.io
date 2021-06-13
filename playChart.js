@@ -109,9 +109,9 @@ function drawNoteTopDown(chart, note, x, y, w, h) {
   ctx.fillStyle = fretColors[note[1]];
   ctx.fillRect(
     x + w / 3 + (note[1] + 0.5) * w / 3 / frets - w / 6 / frets,
-    y + yp - w / 18 / frets,
+    y + yp - w / 200,
     w / 3 / frets,
-    w / 9 / frets);
+    w / 100);
 }
 
 function detectNoteHit(time, fret) {
@@ -188,9 +188,9 @@ function drawPlayChart(x, y, w, h) {
       ctx.fillStyle = fretColors[i];
       ctx.fillRect(
         x + w / 3 + (i + 0.5) * w / 3 / frets - w / 6 / frets,
-        y + 0.9 * h - w / 18 / frets,
+        y + 0.9 * h - w / 200,
         w / 3 / frets,
-        w / 9 / frets);
+        w / 100);
     }
   }
 
