@@ -106,8 +106,9 @@ function drawCanvas(t) {
 
   scenes[scene]();
   scene = sb;
-
-  keys = [];
+  if(scene != 4){
+    keys = [];
+  }
 
   if(dev) {
     ctx.fillStyle = 'white';

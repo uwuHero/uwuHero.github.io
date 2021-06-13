@@ -31,6 +31,7 @@ function drawChartSettings(x, y, w, h) {
         w * 0.08,
         a => {
           songs[currentSong][3] = chartSong(cSong, i);
+          chartTrack = i;
           startSong();
           sb = 4;
         }, uwu2, uwu2b);

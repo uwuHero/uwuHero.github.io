@@ -1,4 +1,7 @@
 let frets = 5;
+
+let hitWindow = 0.07;
+
 let minimumSustain = 0.5;
 let ignoreGap = 1;
 let maxBPS = 30;
