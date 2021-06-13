@@ -34,3 +34,6 @@ minus.src = 'assets/minus.png';
 
 const plus = new Image();
 plus.src = 'assets/plus.png';
+
+const paper = new Image();
+paper.src = 'assets/paper.png';

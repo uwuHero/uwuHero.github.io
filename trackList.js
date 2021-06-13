@@ -34,16 +34,11 @@ function drawTrackList(x, y, w, h) {
         loadMidi(i);
         currentSong = i;
         sb = 3;
-      }, uwu2, uwu2b);
-    ctx.fillStyle = '#fffa';
-    ctx.fillRect(
-      (x + w * 0.1) >> 0,
-      (y + w * 0.1 * (i + 1) + trackScroll * w) >> 0,
-      w * 0.5,
-      w * 0.08);
+      }, paper, paper);
+
     ctx.fillStyle = '#000';
     ctx.font = `${(songs[i][1].length>25?songs[i][1].length>33?w*0.02:w*0.03:w*0.04)>>0}px sans-serif`;
-    ctx.fillText(songs[i][1],
+    ctx.fillText(' '+songs[i][1],
       (x + w * 0.11) >> 0,
       (y + w * 0.1 * (i + (songs[i][1].length > 25 ? songs[i][1].length > 33 ? 1.5 : 1.55 : 1.6)) + trackScroll * w) >> 0);
   }
