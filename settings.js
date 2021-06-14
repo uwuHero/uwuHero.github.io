@@ -91,6 +91,9 @@ var keyCodes = {
   221: ']'
 };
 
+let hyperSpeed = 7/3;
+let hyperSpeedV = 3;
+
 function keyName(code) {
   if(code > 47 && code < 91) {
     return String.fromCharCode(code);
@@ -118,7 +121,7 @@ function drawSettings(x, y, w, h) {
     y + h * 0.15 + w * 0.01,
     w * 0.04, w * 0.04,
     a => {
-      frets = Math.max(2, frets - 1)
+      frets = Math.max(2, frets - 1);
     }, minus, minus);
 
   button(
@@ -126,7 +129,7 @@ function drawSettings(x, y, w, h) {
     y + h * 0.15 + w * 0.01,
     w * 0.04, w * 0.04,
     a => {
-      frets = Math.min(fretColors.length, frets + 1)
+      frets = Math.min(fretColors.length, frets + 1);
     }, plus, plus);
 
   ctx.fillText('Max Chord Size', x + w * 0.05, y + h * 0.33);
@@ -137,7 +140,7 @@ function drawSettings(x, y, w, h) {
     y + h * 0.25 + w * 0.01,
     w * 0.04, w * 0.04,
     a => {
-      maxNotes = Math.max(1, maxNotes - 1)
+      maxNotes = Math.max(1, maxNotes - 1);
     }, minus, minus);
 
   button(
@@ -145,18 +148,19 @@ function drawSettings(x, y, w, h) {
     y + h * 0.25 + w * 0.01,
     w * 0.04, w * 0.04,
     a => {
-      maxNotes = Math.min(frets, maxNotes + 1)
+      maxNotes = Math.min(frets, maxNotes + 1);
     }, plus, plus);
 
-  ctx.fillText('Volume', x + w * 0.05, y + h * 0.43);
-  ctx.fillText(volume, x + w * 0.45, y + h * 0.43);
+  ctx.fillText('hyperSpeed', x + w * 0.05, y + h * 0.43);
+  ctx.fillText(hyperSpeedV, x + w * 0.45, y + h * 0.43);
 
   button(
     x + w * 0.38,
     y + h * 0.35 + w * 0.01,
     w * 0.04, w * 0.04,
     a => {
-      volume = Math.max(0, volume - 1)
+      hyperSpeedV = Math.max(1, hyperSpeedV - 1);
+      hyperSpeed = 7 / hyperSpeedV;
     }, minus, minus);
 
   button(
@@ -164,7 +168,28 @@ function drawSettings(x, y, w, h) {
     y + h * 0.35 + w * 0.01,
     w * 0.04, w * 0.04,
     a => {
-      volume = Math.min(20, volume + 1)
+      hyperSpeedV = Math.min(20, hyperSpeedV + 1);
+      hyperSpeed = 7 / hyperSpeedV;
+    }, plus, plus);
+
+
+  ctx.fillText('Volume', x + w * 0.05, y + h * 0.53);
+  ctx.fillText(volume, x + w * 0.45, y + h * 0.53);
+
+  button(
+    x + w * 0.38,
+    y + h * 0.45 + w * 0.01,
+    w * 0.04, w * 0.04,
+    a => {
+      volume = Math.max(0, volume - 1);
+    }, minus, minus);
+
+  button(
+    x + w * 0.5,
+    y + h * 0.45 + w * 0.01,
+    w * 0.04, w * 0.04,
+    a => {
+      volume = Math.min(20, volume + 1);
     }, plus, plus);
 
   button(

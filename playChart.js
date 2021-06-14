@@ -5,8 +5,6 @@ let lastTime = -Infinity;
 let lastTone = -Infinity;
 let startTime = 0;
 
-let hyperSpeed = 2;
-
 let holdingKeys = [];
 
 let fretColors = ['#00ff00', '#ff0000', '#ffff00', '#0088ff', '#ff8800', '#ff00ff', '#00ffff', '#ff00ff', '#ff8800', '#0088ff', '#ffff00', '#ff0000', '#00ff00'];
