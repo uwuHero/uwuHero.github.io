@@ -1,6 +1,7 @@
 let chartTrack = 0;
 
 let currentTime = -Infinity;
+let lastTime = -Infinity;
 let lastTone = -Infinity;
 let startTime = 0;
 
@@ -10,12 +11,23 @@ let holdingKeys = [];
 
 let fretColors = ['#00ff00', '#ff0000', '#ffff00', '#0088ff', '#ff8800', '#ff00ff', '#00ffff', '#ff00ff', '#ff8800', '#0088ff', '#ffff00', '#ff0000', '#00ff00'];
 
+let streak;
+let notesHit;
+let FC;
+
+let sustains = [];
+
 function startSong() {
   startTime = Date.now() + 1000 * startingWait;
   for(let i = 0; i < frets; i++) {
     holdingKeys[i] = false;
   }
   lastNoteHit = 0;
+  streak = 0;
+  notesHit = 0;
+  currentTime = 0;
+  sustains = [];
+  FC = true;
 }
 
 function drawLinesTopDown(midi, x, y, w, h) {
@@ -100,18 +112,33 @@ function drawLinesTopDown(midi, x, y, w, h) {
   }
 }
 
-function drawNoteTopDown(chart, note, x, y, w, h) {
+function drawNoteTopDown(note, x, y, w, h, grey = 0) {
   //currentSong
   let yp = 0.9 * h - (note[0] - currentTime / 1000) / hyperSpeed * h;
-  if(yp < -w / 18 / frets || yp > h + w / 18 / frets) {
+  //let ly = 0.9 * h - (note[0] - lastTime / 1000) / hyperSpeed * h;
+
+  if(grey === 0 && currentTime / 1000 - hitWindow > note[0] && lastTime / 1000 - hitWindow <= note[0]) {
+    sustains.push([0, note[0], note[1], note[0] + note[2]]);
+    return true;
+  }
+
+  if(grey === 0 && (yp < -w / 18 / frets || yp > h + w / 18 / frets)) {
     return;
   }
-  ctx.fillStyle = fretColors[note[1]];
+  ctx.fillStyle = grey ? '#888' : fretColors[note[1]];
   ctx.fillRect(
     x + w / 3 + (note[1] + 0.5) * w / 3 / frets - w / 6 / frets,
     y + yp - w / 200,
     w / 3 / frets,
     w / 100);
+
+  let dur = note[2] / hyperSpeed * h;
+
+  ctx.fillRect(
+    x + w / 3 + (note[1] + 0.5) * w / 3 / frets - w / 18 / frets,
+    y + yp - dur,
+    w / 9 / frets,
+    dur);
 }
 
 function detectNoteHit(time, fret) {
@@ -122,7 +149,12 @@ function detectNoteHit(time, fret) {
     if(fret == songs[currentSong][3].chart[i][1] && Math.abs(songs[currentSong][3].chart[i][0] - time) < hitWindow) {
       //console.log([time,songs[currentSong][3].chart[i][0] - time,songs[currentSong][3].chart[i][0]]);
       //if(Math.abs(songs[currentSong][3].chart[i][0] - time) < hitWindow) {
+      if(songs[currentSong][3].chart[i][2] > 0) {
+        sustains.push([true, currentTime / 1000, songs[currentSong][3].chart[i][1], songs[currentSong][3].chart[i][0] + songs[currentSong][3].chart[i][2]]);
+      }
       songs[currentSong][3].chart.splice(i, 1);
+      streak++;
+      notesHit++;
       return true;
     }
   }
@@ -144,19 +176,40 @@ function hitNotes() {
     }
     if(fret < frets && !detectNoteHit((key[2] - startTime) / 1000, fret)) {
       playSound((Math.random() * 32 >> 0) + 44, 0.2, 1, songs[currentSong][2].tracks[chartTrack].instrument.family, songs[currentSong][2].tracks[chartTrack].instrument.name);
+      streak = 0;
+      FC = false;
     }
   }
 }
 
-function playSong(track) {
+function playSong(track, gameTrack) {
   for(let i = 0; i < track.notes.length; i++) {
     if(track.notes[i].time * 1000 < lastTone) {
       continue;
     }
-    if(track.notes[i].time * 1000 >= currentTime) {
+    if(track.notes[i].time * 1000 > currentTime - hitWindow * 1000) {
+      return;
+    }
+    if(gameTrack && notesHit > 0 && streak == 0) {
       return;
     }
     playSound(track.notes[i].midi, track.notes[i].duration, track.notes[i].velocity, track.instrument.family, track.instrument.name);
+  }
+}
+
+let streakColors = ['#888', '#ff8844', '#88ff88', '#aaccff', '#ff88ff', '#fff'];
+
+function drawScoreTopDown(x, y, w, h) {
+  //ctx.font = `${(h*0.5)>>0}px sans-serif`;
+  //ctx.fillStyle = '#fff';
+  //ctx.fillText(`${notesHit}\n${streak}`, x, y + h / 2, w, h)
+  if(FC) {
+    ctx.fillStyle = '#ffd700';
+    ctx.fillRect(x + w / 3 * 2, y, w / 64, h);
+  }
+  for(let i = 0; i < 10; i++) {
+    ctx.fillStyle = streakColors[(((streak / 10 >> 0) - 1 + (i < streak % 10 ? 1 : 0)) % 5) + 1];
+    ctx.fillRect(x + w / 3 * 2, y + h - h / 10 * (i + 7 / 8), w / 64, h / 40 * 3);
   }
 }
 
@@ -170,14 +223,35 @@ function drawPlayChart(x, y, w, h) {
     ctx.fillRect(x + w / 3 + i * w / frets / 3, y, 1, h);
   }
 
+  lastTime = currentTime;
   currentTime = Date.now() - startTime;
 
   hitNotes();
 
   drawLinesTopDown(songs[currentSong][2], x, y, w, h);
 
+  //[true, currentTime, song.chart[i][1], song.chart[i][0] + song.chart[i][2]]);
+  for(let i = 0; i < sustains.length; i++) {
+    if(!holdingKeys[sustains[i][2]]) {
+      sustains[i][0] = false;
+    } else if(sustains[i][0]) {
+      sustains[i][1] = currentTime / 1000;
+    }
+    if(sustains[i][3] - sustains[i][1] < 0 || sustains[i][3] + hyperSpeed / 10 < currentTime / 1000) {
+      sustains.splice(i, 1);
+      i--;
+      continue;
+    }
+    drawNoteTopDown([sustains[i][1], sustains[i][2], sustains[i][3] - sustains[i][1]], x, y, w, h, !sustains[i][0]);
+  }
+
   for(let i = 0; i < songs[currentSong][3].chart.length; i++) {
-    drawNoteTopDown(songs[currentSong][3], songs[currentSong][3].chart[i], x, y, w, h);
+    if(drawNoteTopDown(songs[currentSong][3].chart[i], x, y, w, h)) {
+      songs[currentSong][3].chart.splice(i, 1);
+      i--;
+      streak = 0;
+      FC = false;
+    }
   }
 
   ctx.fillStyle = '#08f';
@@ -195,14 +269,21 @@ function drawPlayChart(x, y, w, h) {
   }
 
   for(let i = 0; i < songs[currentSong][2].tracks.length; i++) {
-    playSong(songs[currentSong][2].tracks[i]);
+    playSong(songs[currentSong][2].tracks[i], i === chartTrack);
   }
 
-  lastTone = currentTime;
+  lastTone = currentTime - hitWindow * 1000;
 
   if(currentTime / 1000 > songs[currentSong][2].duration) {
     sb = 2;
   }
+
+  drawScoreTopDown(x, y, w, h);
+
+
+  ctx.fillStyle=colors[0];
+  ctx.fillRect(x,0,w,y);
+  ctx.fillRect(x,y+h,w,y);
 }
 
 function s4() {

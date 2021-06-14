@@ -236,6 +236,7 @@ function chartSong(currentMidi, track) {
 
   let lastTick = 0;
   for(let i = 0; i < chartedNotes.length; i++) {
+    let originalDuration = unChartedNotes[i][2];
     let duration = unChartedNotes[i][2];
     if(duration > 0) {
       let strip = false;
@@ -265,25 +266,34 @@ function chartSong(currentMidi, track) {
       }
 
       stripAmount *= stripSustain;
+      stripAmount = 0.5;
       for(let j = 0; j < chartedNotes.length; j++) {
-        if(unChartedNotes[i][0] != unChartedNotes[j][0] && unChartedNotes[j][0] - unChartedNotes[i][0] > 0 && unChartedNotes[i][0] + duration + stripAmount * chart.ppq * cTempo >= unChartedNotes[j][0]) {
-          if(!extendedSustains || chartedNotes[i] == chartedNotes[j] || Math.abs(unChartedNotes[i][0] + duration - unChartedNotes[j][0]) < noteTolerance) {
+        if(unChartedNotes[i][0] != unChartedNotes[j][0] &&
+          unChartedNotes[j][0] - unChartedNotes[i][0] > 0 &&
+          unChartedNotes[i][0] + duration + stripAmount * chart.ppq >= unChartedNotes[j][0]) {
+          if(!extendedSustains ||
+            chartedNotes[i] == chartedNotes[j] ||
+            Math.abs(unChartedNotes[i][0] + duration - unChartedNotes[j][0]) < noteTolerance * chart.ppq) {
             duration = unChartedNotes[j][0] - unChartedNotes[i][0];
             strip = true;
             j = chartedNotes.length;
           }
         }
       }
+
       if(strip) {
-        duration -= stripAmount * chart.ppq * cTempo;
+        duration -= stripAmount * chart.ppq;
       }
-      if(duration < minimumSustain * chart.ppq * cTempo) {
+      if(duration < minimumSustain * chart.ppq) {
         duration = 0;
       }
       unChartedNotes[i][2] = duration;
+      unChartedNotes[i][6] *= duration / originalDuration;
+    } else {
+      unChartedNotes[i][6] = 0;
     }
     //chart.chart.push([unChartedNotes[i][0], chartedNotes[i], duration]);
-    chart.chart.push([unChartedNotes[i][3], chartedNotes[i], unChartedNotes[i][7]]);
+    chart.chart.push([unChartedNotes[i][3], chartedNotes[i], unChartedNotes[i][6]]);
   }
   return chart;
 }

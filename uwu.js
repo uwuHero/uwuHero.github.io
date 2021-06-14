@@ -98,6 +98,9 @@ let scene = 0,
 
 const scenes = [s0, s1, s2, s3, s4];
 
+let lt=Date.now();
+let ti=lt;
+
 function drawCanvas(t) {
   ctx.imageSmoothingQuality = "high";
   document.body.style.cursor = 'default';
@@ -111,12 +114,15 @@ function drawCanvas(t) {
   }
 
   if(dev) {
-    ctx.fillStyle = 'white';
+    ti=Date.now();
+    ctx.fillStyle = '#000'
+    ctx.fillRect(0,0,100,25);
+    ctx.fillStyle = '#fff';
     ctx.font = '20px sans-serif';
     ctx.textAlign = 'left';
-    //ctx.fillText((1000/(t-lt)>>0)+" FPS",5,20);
+    ctx.fillText((1000/(ti-lt)>>0)+" FPS",5,20);
+    lt = ti;
   }
-  lt = t;
 
   if(t) {
     window.requestAnimationFrame(drawCanvas);

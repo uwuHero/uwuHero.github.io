@@ -2,10 +2,10 @@ let frets = 5;
 
 let hitWindow = 0.07;
 
-let minimumSustain = 0.5;
+let minimumSustain = 1;
 let ignoreGap = 1;
 let maxBPS = 30;
-let stripSustain = 1;
+let stripSustain = 32;
 let maxNotes = 2;
 let extendedSustains = true;
 let noteTolerance = 0.15;
