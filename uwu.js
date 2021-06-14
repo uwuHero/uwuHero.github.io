@@ -98,8 +98,8 @@ let scene = 0,
 
 const scenes = [s0, s1, s2, s3, s4];
 
-let lt=Date.now();
-let ti=lt;
+let lt = Date.now();
+let ti = lt;
 
 function drawCanvas(t) {
   ctx.imageSmoothingQuality = "high";
@@ -114,13 +114,13 @@ function drawCanvas(t) {
   }
 
   if(dev) {
-    ti=Date.now();
+    ti = Date.now();
     ctx.fillStyle = '#000'
-    ctx.fillRect(0,0,100,25);
+    ctx.fillRect(0, 0, 100, 25);
     ctx.fillStyle = '#fff';
     ctx.font = '20px sans-serif';
     ctx.textAlign = 'left';
-    ctx.fillText((1000/(ti-lt)>>0)+" FPS",5,20);
+    ctx.fillText((1000 / (ti - lt) >> 0) + " FPS", 5, 20);
     lt = ti;
   }
 
@@ -194,7 +194,7 @@ window.ontouchmove = (event) => {
 let keys = [];
 
 document.onkeydown = (event) => {
-  if(binding>=0) {
+  if(binding >= 0) {
     keyBindings.notes[binding] = event.keyCode;
     binding = -1;
   }

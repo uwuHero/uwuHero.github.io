@@ -3,13 +3,15 @@ let audioContext = new AudioContextFunc();
 let player = new WebAudioFontPlayer();
 player.loader.decodeAfterLoading(audioContext, '_tone_0010_GeneralUserGS_sf2_file');
 
-function playSound(pitch, duration, volume, family, name) {
+function playSound(pitch, duration, vol, family, name) {
+  vol *= volume/50;
   switch (family) {
     case 'drums':
+      drumSound.volume(vol*2);
       drumSound.play(pitch - 26 + '');
       break;
     default:
-      player.queueWaveTable(audioContext, audioContext.destination, _tone_0010_GeneralUserGS_sf2_file, 0, pitch, duration < 0.18 ? 0.18 : duration, volume);
+      player.queueWaveTable(audioContext, audioContext.destination, _tone_0010_GeneralUserGS_sf2_file, 0, pitch, duration < 0.18 ? 0.18 : duration, vol);
   }
 }
 

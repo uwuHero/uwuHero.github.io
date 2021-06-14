@@ -281,9 +281,9 @@ function drawPlayChart(x, y, w, h) {
   drawScoreTopDown(x, y, w, h);
 
 
-  ctx.fillStyle=colors[0];
-  ctx.fillRect(x,0,w,y);
-  ctx.fillRect(x,y+h,w,y);
+  ctx.fillStyle = colors[0];
+  ctx.fillRect(x, 0, w, y);
+  ctx.fillRect(x, y + h, w, y);
 }
 
 function s4() {
