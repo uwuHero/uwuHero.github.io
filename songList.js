@@ -1,5 +1,6 @@
 let currentSong = 0;
 let songs = [
+  //['songs/bit.mid', 'Bit Depth by C1BDC & Bit 4'],
   ['songs/bit_depth_by_C1BDC_&_Bit_4.mid', 'Bit Depth by C1BDC & Bit 4'],
   ['songs/calm3.mid', 'C418 Sweden'],
 

@@ -13,6 +13,9 @@ function playSound(pitch, duration, vol, family, name) {
     vol *= songs[currentSong].volume;
   }
   switch (family) {
+    case 'synth lead':
+      player.queueWaveTable(audioContext, audioContext.destination, _tone_0800_Aspirin_sf2_file, 0, pitch, duration, vol);
+      break;
     case 'bass':
     case 'guitar':
       player.queueWaveTable(audioContext, audioContext.destination, _tone_0270_Aspirin_sf2_file, 0, pitch, duration < 0.18 ? 0.18 : duration, vol);
