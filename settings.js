@@ -124,6 +124,16 @@ function drawSettings(x, y, w, h) {
       frets = Math.max(2, frets - 1);
     }, minus, minus);
 
+  ctx.fillText('Extended Sustains', x + w * 0.55, y + h * 0.23);
+
+  button(
+    x + w * 0.93,
+    y + h * 0.15 + w * 0.01,
+    w * 0.04, w * 0.04,
+    a => {
+      extendedSustains = !extendedSustains;
+    }, extendedSustains?minus:plus, extendedSustains?minus:plus);
+
   button(
     x + w * 0.5,
     y + h * 0.15 + w * 0.01,

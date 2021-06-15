@@ -2,10 +2,21 @@ let AudioContextFunc = window.AudioContext || window.webkitAudioContext;
 let audioContext = new AudioContextFunc();
 let player = new WebAudioFontPlayer();
 player.loader.decodeAfterLoading(audioContext, '_tone_0010_GeneralUserGS_sf2_file');
+player.loader.decodeAfterLoading(audioContext, '_tone_0270_Aspirin_sf2_file');
 
 function playSound(pitch, duration, vol, family, name) {
+  if(songs[currentSong].hasOwnProperty('add')){
+    vol += songs[currentSong].add;
+  }
   vol *= volume/50;
+  if(songs[currentSong].hasOwnProperty('volume')){
+    vol *= songs[currentSong].volume;
+  }
   switch (family) {
+    case 'bass':
+    case 'guitar':
+      player.queueWaveTable(audioContext, audioContext.destination, _tone_0270_Aspirin_sf2_file, 0, pitch, duration < 0.18 ? 0.18 : duration, vol);
+      break;
     case 'drums':
       drumSound.volume(vol*2);
       drumSound.play(pitch - 26 + '');

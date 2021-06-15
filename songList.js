@@ -1,6 +1,8 @@
 let currentSong = 0;
 let songs = [
-  ['songs/C418_Sweden.mid', 'C418 Sweden'],
+  ['songs/bit_depth_by_C1BDC_&_Bit_4.mid', 'Bit Depth by C1BDC & Bit 4'],
+  ['songs/calm3.mid', 'C418 Sweden'],
+
   ['songs/Canon_in_D.mid', 'Canon in D'],
   ['songs/The_Entertainer.mid','The Entertainer'],
   ['songs/Megalovania.mid', 'Megalovania'],
@@ -16,3 +18,6 @@ let songs = [
   ['songs/The_Moldau.mid', 'The Moldau'],
   ['songs/Moonlight_Sonata_3rd_Movement.mid', 'Moonlight Sonata 3rd Movement'],
 ];
+
+//songs[0].volume = 1;
+songs[1].add = 0.1;
