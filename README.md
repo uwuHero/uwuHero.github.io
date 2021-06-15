@@ -1,8 +1,6 @@
 [![Discord Chat](https://img.shields.io/discord/631676095661342752.svg)](https://discord.gg/TkXTuhh)
 # UwU Hero
-UwU Hero!
-
-https://uwuhero.github.io/
+Play here: https://uwuhero.github.io/
 
 Discord: https://discord.gg/TkXTuhh
 

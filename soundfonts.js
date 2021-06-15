@@ -20,6 +20,9 @@ function playSound(pitch, duration, vol, family, name) {
     case 'guitar':
       player.queueWaveTable(audioContext, audioContext.destination, _tone_0270_Aspirin_sf2_file, 0, pitch, duration < 0.18 ? 0.18 : duration, vol);
       break;
+    case 'ensemble':
+      player.queueWaveTable(audioContext, audioContext.destination, _tone_0481_GeneralUserGS_sf2_file, 0, pitch, duration < 0.18 ? 0.18 : duration, vol);
+      break;
     case 'drums':
       drumSound.volume(vol*2);
       drumSound.play(pitch - 26 + '');
