@@ -179,7 +179,7 @@ function pollGamepads() {
         let pr = gp.buttons[j].pressed;
         if(gamepadKeys[i][j] !== pr){
           gamepadKeys[i][j] = pr;
-          keys.push([255+255*i+j, pr, Date.now()]);
+          keys.push([256+256*i+j, pr, Date.now()]);
 
           if(pr && binding >= 0) {
             keyBindings.notes[binding] = 255+255*i+j;
