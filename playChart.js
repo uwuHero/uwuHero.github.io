@@ -7,13 +7,64 @@ let startTime = 0;
 
 let holdingKeys = [];
 
-let fretColors = ['#00ff00', '#ff0000', '#ffff00', '#0088ff', '#ff8800', '#ff00ff', '#00ffff', '#ff00ff', '#ff8800', '#0088ff', '#ffff00', '#ff0000', '#00ff00'];
+let fretPalette = [
+  ['#00ff00', '#ff0000', '#ffff00', '#0088ff', '#ff8800', '#ff00ff', '#00ffff'],
+  ['#ff0000', '#ff8800', '#ffff00', '#00ff00', '#00ffff', '#0088ff', '#ff00ff'],
+  ['#117733', '#44AA99', '#88CCEE', '#DDCC77', '#CC6677', '#AA4499', '#882255'],
+  ['rgb(230,159,0)', 'rgb(86,180,233)', 'rgb(0,158,115)', 'rgb(240,228,66)', 'rgb(0,114,178)', 'rgb(213,94,0)', 'rgb(204,121,167)']
+];
+
+let fretColors = [
+  [
+    [0],
+    [0, 1],
+    [0, 1, 2],
+    [0, 1, 2, 3],
+    [0, 1, 2, 3, 4],
+    [0, 1, 2, 3, 4, 5],
+    [0, 1, 2, 3, 4, 5, 6],
+    [0, 1, 2, 3, 0, 1, 2, 3],
+    [0, 1, 2, 3, 4, 0, 1, 2, 3],
+    [0, 1, 2, 3, 4, 0, 1, 2, 3, 4],
+    [0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 5],
+    [0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5],
+    [0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5, 6],
+    [0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6],
+  ],
+  [
+    [0],
+    [0, 1],
+    [0, 1, 2],
+    [0, 1, 2, 3],
+    [0, 1, 2, 3, 4],
+    [0, 1, 2, 3, 4, 5],
+    [0, 1, 2, 3, 4, 5, 6],
+    [0, 1, 2, 3, 3, 2, 1, 0],
+    [0, 1, 2, 3, 4, 3, 2, 1, 0],
+    [0, 1, 2, 3, 4, 4, 3, 2, 1, 0],
+    [0, 1, 2, 3, 4, 5, 4, 3, 2, 1, 0],
+    [0, 1, 2, 3, 4, 5, 5, 4, 3, 2, 1, 0],
+    [0, 1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1, 0],
+    [0, 1, 2, 3, 4, 5, 6, 6, 5, 4, 3, 2, 1, 0],
+  ]
+];
 
 let streak;
 let notesHit;
 let FC;
 
 let sustains = [];
+
+function fretHighway(x, y, w, h) {
+  for(let i = 0; i < frets; i++) {
+    ctx.fillStyle = fretPalette[colorPalette][fretColors[colorMode][frets - 1][i]];
+    ctx.fillRect(x + w / 3 + i * w / frets / 3, y, w / frets / 3, h);
+  }
+  ctx.fillStyle = '#000c';
+  ctx.fillRect(x, y, w, h);
+}
+
+let highways = [a => 0, fretHighway];
 
 function startSong() {
   startTime = Date.now() + 1000 * startingWait;
@@ -123,7 +174,7 @@ function drawNoteTopDown(note, x, y, w, h, grey = 0) {
   if(grey === 0 && (yp < -w / 18 / frets || yp > h + w / 18 / frets)) {
     return;
   }
-  ctx.fillStyle = grey ? '#888' : fretColors[note[1]];
+  ctx.fillStyle = grey ? '#888' : fretPalette[colorPalette][fretColors[colorMode][frets - 1][note[1]]];
   ctx.fillRect(
     x + w / 3 + (note[1] + 0.5) * w / 3 / frets - w / 6 / frets,
     y + yp - w / 200,
@@ -216,6 +267,8 @@ function drawPlayChart(x, y, w, h) {
   ctx.fillStyle = '#000';
   ctx.fillRect(x, y, w, h);
 
+  highways[highway](x, y, w, h);
+
   ctx.fillStyle = '#fff';
   for(let i = 0; i <= frets; i++) {
     ctx.fillRect(x + w / 3 + i * w / frets / 3, y, 1, h);
@@ -257,7 +310,7 @@ function drawPlayChart(x, y, w, h) {
 
   for(let i = 0; i < frets; i++) {
     if(holdingKeys[i]) {
-      ctx.fillStyle = fretColors[i];
+      ctx.fillStyle = fretPalette[colorPalette][fretColors[colorMode][frets - 1][i]];
       ctx.fillRect(
         x + w / 3 + (i + 0.5) * w / 3 / frets - w / 6 / frets,
         y + 0.9 * h - w / 200,

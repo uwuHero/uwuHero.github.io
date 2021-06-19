@@ -91,8 +91,14 @@ var keyCodes = {
   221: ']'
 };
 
-let hyperSpeed = 7/3;
+let hyperSpeed = 7 / 3;
 let hyperSpeedV = 3;
+
+let colorMode = 0;
+let colorPalette = 0;
+let lefty = false;
+
+let highway = 0;
 
 function keyName(code) {
   if(code > 47 && code < 91) {
@@ -116,101 +122,197 @@ function drawSettings(x, y, w, h) {
   ctx.fillText('Lanes', x + w * 0.05, y + h * 0.23);
   ctx.fillText(frets, x + w * 0.45, y + h * 0.23);
 
-  button(
-    x + w * 0.38,
-    y + h * 0.15 + w * 0.01,
-    w * 0.04, w * 0.04,
-    a => {
-      frets = Math.max(2, frets - 1);
-    }, minus, minus);
+  if(frets > 2) {
+    button(
+      x + w * 0.38,
+      y + h * 0.15 + w * 0.01,
+      w * 0.04, w * 0.04,
+      a => {
+        frets = Math.max(2, frets - 1);
+      }, minus, minus);
+  }
+  if(frets < fretColors[colorMode].length) {
+    button(
+      x + w * 0.5,
+      y + h * 0.15 + w * 0.01,
+      w * 0.04, w * 0.04,
+      a => {
+        frets = Math.min(fretColors[colorMode].length, frets + 1);
+      }, plus, plus);
+  }
 
   ctx.fillText('Extended Sustains', x + w * 0.55, y + h * 0.23);
 
   button(
-    x + w * 0.93,
+    x + w * 0.925,
     y + h * 0.15 + w * 0.01,
     w * 0.04, w * 0.04,
     a => {
       extendedSustains = !extendedSustains;
-    }, extendedSustains?minus:plus, extendedSustains?minus:plus);
+    }, extendedSustains ? minus : plus, extendedSustains ? minus : plus);
+
+  ctx.fillText('Lefty', x + w * 0.55, y + h * 0.33);
 
   button(
-    x + w * 0.5,
-    y + h * 0.15 + w * 0.01,
+    x + w * 0.925,
+    y + h * 0.25 + w * 0.01,
     w * 0.04, w * 0.04,
     a => {
-      frets = Math.min(fretColors.length, frets + 1);
-    }, plus, plus);
+      lefty = !lefty;
+      for(let i = 0; i < fretColors.length; i++) {
+        for(let j = 0; j < fretColors[i].length; j++) {
+          fretColors[i][j].reverse();
+        }
+      }
+    }, lefty ? minus : plus, lefty ? minus : plus);
+
+
+  ctx.fillText('Color Mode', x + w * 0.55, y + h * 0.43);
+
+  if(colorMode > 0) {
+    button(
+      x + w * 0.90,
+      y + h * 0.35 + w * 0.01,
+      w * 0.04, w * 0.04,
+      a => {
+        colorMode = Math.max(0, colorMode - 1);
+      }, minus, minus);
+  }
+  if(colorMode < fretColors.length - 1) {
+    button(
+      x + w * 0.95,
+      y + h * 0.35 + w * 0.01,
+      w * 0.04, w * 0.04,
+      a => {
+        colorMode = Math.min(fretColors.length - 1, colorMode + 1);
+      }, plus, plus);
+  }
+
+  ctx.fillText('Palette', x + w * 0.55, y + h * 0.53);
+
+  if(colorPalette > 0) {
+    button(
+      x + w * 0.90,
+      y + h * 0.45 + w * 0.01,
+      w * 0.04, w * 0.04,
+      a => {
+        colorPalette = Math.max(0, colorPalette - 1);
+      }, minus, minus);
+  }
+  if(colorPalette < fretPalette.length - 1) {
+    button(
+      x + w * 0.95,
+      y + h * 0.45 + w * 0.01,
+      w * 0.04, w * 0.04,
+      a => {
+        colorPalette = Math.min(fretPalette.length - 1, colorPalette + 1);
+      }, plus, plus);
+  }
+
+
+  ctx.fillText('Highway', x + w * 0.55, y + h * 0.63);
+
+  if(highway > 0) {
+    button(
+      x + w * 0.90,
+      y + h * 0.55 + w * 0.01,
+      w * 0.04, w * 0.04,
+      a => {
+        highway = Math.max(0, highway - 1);
+      }, minus, minus);
+  }
+  if(highway < highways.length - 1) {
+    button(
+      x + w * 0.95,
+      y + h * 0.55 + w * 0.01,
+      w * 0.04, w * 0.04,
+      a => {
+        highway = Math.min(highways.length - 1, highway + 1);
+      }, plus, plus);
+  }
+
 
   ctx.fillText('Max Chord Size', x + w * 0.05, y + h * 0.33);
   ctx.fillText(maxNotes, x + w * 0.45, y + h * 0.33);
 
-  button(
-    x + w * 0.38,
-    y + h * 0.25 + w * 0.01,
-    w * 0.04, w * 0.04,
-    a => {
-      maxNotes = Math.max(1, maxNotes - 1);
-    }, minus, minus);
-
-  button(
-    x + w * 0.5,
-    y + h * 0.25 + w * 0.01,
-    w * 0.04, w * 0.04,
-    a => {
-      maxNotes = Math.min(frets, maxNotes + 1);
-    }, plus, plus);
+  if(maxNotes > 1) {
+    button(
+      x + w * 0.38,
+      y + h * 0.25 + w * 0.01,
+      w * 0.04, w * 0.04,
+      a => {
+        maxNotes = Math.max(1, maxNotes - 1);
+      }, minus, minus);
+  }
+  if(maxNotes < frets) {
+    button(
+      x + w * 0.5,
+      y + h * 0.25 + w * 0.01,
+      w * 0.04, w * 0.04,
+      a => {
+        maxNotes = Math.min(frets, maxNotes + 1);
+      }, plus, plus);
+  }
 
   ctx.fillText('hyperSpeed', x + w * 0.05, y + h * 0.43);
   ctx.fillText(hyperSpeedV, x + w * 0.45, y + h * 0.43);
 
-  button(
-    x + w * 0.38,
-    y + h * 0.35 + w * 0.01,
-    w * 0.04, w * 0.04,
-    a => {
-      hyperSpeedV = Math.max(1, hyperSpeedV - 1);
-      hyperSpeed = 7 / hyperSpeedV;
-    }, minus, minus);
-
-  button(
-    x + w * 0.5,
-    y + h * 0.35 + w * 0.01,
-    w * 0.04, w * 0.04,
-    a => {
-      hyperSpeedV = Math.min(20, hyperSpeedV + 1);
-      hyperSpeed = 7 / hyperSpeedV;
-    }, plus, plus);
-
+  if(hyperSpeedV > 1) {
+    button(
+      x + w * 0.38,
+      y + h * 0.35 + w * 0.01,
+      w * 0.04, w * 0.04,
+      a => {
+        hyperSpeedV = Math.max(1, hyperSpeedV - 1);
+        hyperSpeed = 7 / hyperSpeedV;
+      }, minus, minus);
+  }
+  if(hyperSpeedV < 20) {
+    button(
+      x + w * 0.5,
+      y + h * 0.35 + w * 0.01,
+      w * 0.04, w * 0.04,
+      a => {
+        hyperSpeedV = Math.min(20, hyperSpeedV + 1);
+        hyperSpeed = 7 / hyperSpeedV;
+      }, plus, plus);
+  }
 
   ctx.fillText('Volume', x + w * 0.05, y + h * 0.53);
   ctx.fillText(volume, x + w * 0.45, y + h * 0.53);
 
-  button(
-    x + w * 0.38,
-    y + h * 0.45 + w * 0.01,
-    w * 0.04, w * 0.04,
-    a => {
-      volume = Math.max(0, volume - 1);
-    }, minus, minus);
-
-  button(
-    x + w * 0.5,
-    y + h * 0.45 + w * 0.01,
-    w * 0.04, w * 0.04,
-    a => {
-      volume = Math.min(20, volume + 1);
-    }, plus, plus);
-
+  if(volume > 0) {
+    button(
+      x + w * 0.38,
+      y + h * 0.45 + w * 0.01,
+      w * 0.04, w * 0.04,
+      a => {
+        volume = Math.max(0, volume - 1);
+      }, minus, minus);
+  }
+  if(volume < 20) {
+    button(
+      x + w * 0.5,
+      y + h * 0.45 + w * 0.01,
+      w * 0.04, w * 0.04,
+      a => {
+        volume = Math.min(20, volume + 1);
+      }, plus, plus);
+  }
   button(
     x + h * 0.05,
     y + h * 0.05,
     w * 0.2, h * 0.1,
     a => sb = 0, backImg, backImgb);
 
+  highways[highway](x - w, y + h * 0.8, w * 3, h * 0.2);
+  ctx.fillStyle = '#fff';
+  for(let i = 1; i <= frets; i++) {
+    ctx.fillRect(x + i * w / frets, y + h * 0.8, 1, h * 0.2);
+  }
   for(let i = 0; i < frets; i++) {
     button(
-      x + w * 0.05 + w * 0.98 * i / frets - w * 0.04,
+      x + w * 0.05 + w * 0.98 * (i + 0.5) / frets - w * 0.08,
       y + h * 0.8 + w * 0.01,
       w * 0.08, w * 0.08,
       a => {
@@ -218,14 +320,16 @@ function drawSettings(x, y, w, h) {
         keyBindings.notes[i] = -1;
       }, minus, minus);
 
-    ctx.fillStyle = fretColors[i];
+    ctx.fillStyle = fretPalette[colorPalette][fretColors[colorMode][frets - 1][i]];
+
     ctx.fillRect(
-      x + w * 0.05 + w * 0.98 * i / frets - w * 0.04,
+      x + w * 0.05 + w * 0.98 * (i + 0.5) / frets - w * 0.08,
       y + h * 0.8 + w * 0.01,
       w * 0.08, w * 0.04);
 
+    ctx.textAlign = 'center';
     ctx.fillText(keyName(keyBindings.notes[i]),
-      x + w * 0.05 + w * 0.98 * i / frets - h * 0.04,
+      x + w * 0.05 + w * 0.98 * (i + 0.5) / frets - w * 0.04,
       y + h * 0.95);
   }
 }

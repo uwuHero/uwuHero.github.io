@@ -166,6 +166,58 @@ window.onmouseout = (event) => {
   mouseY = -1;
 }
 
+let gamepadKeys = {};
+let gamepads = {};
+
+function pollGamepads() {
+  let cGamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads : []);
+
+  for(let i in gamepads) {
+    let gp = cGamepads[i];
+    if(gp) {
+      for(let j = 0; j < gp.buttons.length; j++) {
+        let pr = gp.buttons[j].pressed;
+        if(gamepadKeys[i][j] !== pr){
+          gamepadKeys[i][j] = pr;
+          keys.push([255+255*i+j, pr, Date.now()]);
+
+          if(pr && binding >= 0) {
+            keyBindings.notes[binding] = 255+255*i+j;
+            binding = -1;
+          }
+        }
+      }
+    }
+  }
+}
+
+gamepadInterval = setInterval(pollGamepads, 10);
+
+function gamepadHandler(event, connecting) {
+  let gamepad = event.gamepad;
+  // Note:
+  // gamepad === navigator.getGamepads()[gamepad.index]
+
+  if(connecting) {
+    gamepads[gamepad.index] = gamepad;
+    gamepadKeys[gamepad.index] = [];
+    for(let i = 0; i < gamepad.buttons.length; i++) {
+      gamepadKeys[gamepad.index][i] = false;
+    }
+  } else {
+    delete gamepads[gamepad.index];
+    delete gamepadKeys[gamepad.index];
+  }
+}
+
+window.addEventListener("gamepadconnected", function(e) {
+  gamepadHandler(e, true);
+}, false);
+window.addEventListener("gamepaddisconnected", function(e) {
+  gamepadHandler(e, false);
+}, false);
+
+
 let ltouch = [0, 0];
 window.ontouchstart = (event) => {
   mouseX = event.touches[0].clientX;
