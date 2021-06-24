@@ -5,7 +5,9 @@ function drawMenu(x, y, w, h) {
 
   if(window.innerHeight == screen.height) {
     button(x + 0.89 * w, y + h - 0.11 * w, 0.1 * w, 0.1 * w, () => {
-      document.exitFullscreen()
+      try {
+        document.exitFullscreen()
+      } catch (e) {}
     }, exitFullscreen, exitFullscreenb);
   } else {
     button(x + 0.89 * w, y + h - 0.11 * w, 0.1 * w, 0.1 * w, () => {

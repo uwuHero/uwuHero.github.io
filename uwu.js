@@ -96,7 +96,7 @@ function imgaeWithinAR(img, ar, x, y, w, h) {
 let scene = 0,
   sb = 0;
 
-const scenes = [s0, s1, s2, s3, s4];
+const scenes = [s0, s1, s2, s3, s4, s5];
 
 let lt = Date.now();
 let ti = lt;
@@ -111,6 +111,9 @@ function drawCanvas(t) {
   scene = sb;
   if(scene != 4) {
     keys = [];
+  }
+  if(scene != 2 && midiDisplay) {
+    toggleMidiInput();
   }
 
   if(dev) {
@@ -136,6 +139,8 @@ window.onresize = () => {
   c.height = window.innerHeight;
   w = c.width;
   h = c.height;
+
+  callWithinAR(0, 0, w, h, 1920 / 1080, positionMidiInput);
 }
 
 window.onmousemove = (event) => {
@@ -182,7 +187,7 @@ function pollGamepads() {
           keys.push([256+256*i+j, pr, Date.now()]);
 
           if(pr && binding >= 0) {
-            keyBindings.notes[binding] = 255+255*i+j;
+            keyBindings.notes[binding] = 256+256*i+j;
             binding = -1;
           }
         }

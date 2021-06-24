@@ -101,6 +101,9 @@ let lefty = false;
 let highway = 0;
 
 function keyName(code) {
+  if(code >= 256){
+    return `P${code/256>>0}-${(code%256)+1}`;
+  }
   if(code > 47 && code < 91) {
     return String.fromCharCode(code);
   }
@@ -114,13 +117,14 @@ function drawSettings(x, y, w, h) {
   ctx.drawImage(background, x, y, w, h);
 
   ctx.fillStyle = '#fff';
-  ctx.textAlign = 'center center';
   ctx.font = `${(w*0.04)>>0}px sans-serif`;
 
   ctx.fillText('Keys', x + w * 0.45, y + h * 0.78);
 
   ctx.fillText('Lanes', x + w * 0.05, y + h * 0.23);
+  ctx.textAlign = 'center';
   ctx.fillText(frets, x + w * 0.45, y + h * 0.23);
+  ctx.textAlign = 'left';
 
   if(frets > 2) {
     button(
@@ -133,7 +137,7 @@ function drawSettings(x, y, w, h) {
   }
   if(frets < fretColors[colorMode].length) {
     button(
-      x + w * 0.5,
+      x + w * 0.48,
       y + h * 0.15 + w * 0.01,
       w * 0.04, w * 0.04,
       a => {
@@ -233,7 +237,9 @@ function drawSettings(x, y, w, h) {
 
 
   ctx.fillText('Max Chord Size', x + w * 0.05, y + h * 0.33);
+  ctx.textAlign = 'center';
   ctx.fillText(maxNotes, x + w * 0.45, y + h * 0.33);
+  ctx.textAlign = 'left';
 
   if(maxNotes > 1) {
     button(
@@ -246,7 +252,7 @@ function drawSettings(x, y, w, h) {
   }
   if(maxNotes < frets) {
     button(
-      x + w * 0.5,
+      x + w * 0.48,
       y + h * 0.25 + w * 0.01,
       w * 0.04, w * 0.04,
       a => {
@@ -255,7 +261,9 @@ function drawSettings(x, y, w, h) {
   }
 
   ctx.fillText('hyperSpeed', x + w * 0.05, y + h * 0.43);
+  ctx.textAlign = 'center';
   ctx.fillText(hyperSpeedV, x + w * 0.45, y + h * 0.43);
+  ctx.textAlign = 'left';
 
   if(hyperSpeedV > 1) {
     button(
@@ -269,7 +277,7 @@ function drawSettings(x, y, w, h) {
   }
   if(hyperSpeedV < 20) {
     button(
-      x + w * 0.5,
+      x + w * 0.48,
       y + h * 0.35 + w * 0.01,
       w * 0.04, w * 0.04,
       a => {
@@ -279,7 +287,9 @@ function drawSettings(x, y, w, h) {
   }
 
   ctx.fillText('Volume', x + w * 0.05, y + h * 0.53);
+  ctx.textAlign = 'center';
   ctx.fillText(volume, x + w * 0.45, y + h * 0.53);
+  ctx.textAlign = 'left';
 
   if(volume > 0) {
     button(
@@ -292,7 +302,7 @@ function drawSettings(x, y, w, h) {
   }
   if(volume < 20) {
     button(
-      x + w * 0.5,
+      x + w * 0.48,
       y + h * 0.45 + w * 0.01,
       w * 0.04, w * 0.04,
       a => {
@@ -310,9 +320,10 @@ function drawSettings(x, y, w, h) {
   for(let i = 1; i <= frets; i++) {
     ctx.fillRect(x + i * w / frets, y + h * 0.8, 1, h * 0.2);
   }
+  ctx.font = `${(w*0.025)>>0}px sans-serif`;
   for(let i = 0; i < frets; i++) {
     button(
-      x + w * 0.05 + w * 0.98 * (i + 0.5) / frets - w * 0.08,
+      x + w * (i + 0.5) / frets - w * 0.04,
       y + h * 0.8 + w * 0.01,
       w * 0.08, w * 0.08,
       a => {
@@ -323,17 +334,17 @@ function drawSettings(x, y, w, h) {
     ctx.fillStyle = fretPalette[colorPalette][fretColors[colorMode][frets - 1][i]];
 
     ctx.fillRect(
-      x + w * 0.05 + w * 0.98 * (i + 0.5) / frets - w * 0.08,
+      x + w * (i + 0.5) / frets - w * 0.04,
       y + h * 0.8 + w * 0.01,
       w * 0.08, w * 0.04);
 
     ctx.textAlign = 'center';
     ctx.fillText(keyName(keyBindings.notes[i]),
-      x + w * 0.05 + w * 0.98 * (i + 0.5) / frets - w * 0.04,
-      y + h * 0.95);
+      x + w * (i + 0.5) / frets,
+      y + h * 0.94);
   }
 }
 
 function s1() {
-  callWithinAR(0, 0, w, h, 1920 / 1080, drawSettings);
+  callWithinAR(0, 0, w, h, 16 / 9, drawSettings);
 }

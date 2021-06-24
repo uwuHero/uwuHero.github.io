@@ -1,8 +1,7 @@
 let currentSong = 0;
 let songs = [
-  //['songs/bit.mid', 'Bit Depth by C1BDC & Bit 4'],
-  ['songs/bit_depth_by_C1BDC_&_Bit_4.mid', 'Bit Depth by C1BDC & Bit 4'],
-  ['songs/calm3.mid', 'C418 Sweden'],
+  ['songs/Free_Bird.mid', 'Free Bird'],
+  ['songs/scale.mid', 'Scale'],
 
   ['songs/Canon_in_D.mid', 'Canon in D'],
   ['songs/The_Entertainer.mid','The Entertainer'],
@@ -21,4 +20,4 @@ let songs = [
 ];
 
 //songs[0].volume = 1;
-songs[1].add = 0.1;
+//songs[1].add = 0.1;

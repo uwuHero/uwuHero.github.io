@@ -50,7 +50,9 @@ let fretColors = [
 ];
 
 let streak;
+let bestStreak;
 let notesHit;
+let totalNotes;
 let FC;
 
 let sustains = [];
@@ -73,7 +75,9 @@ function startSong() {
   }
   lastNoteHit = 0;
   streak = 0;
+  bestStreak = 0;
   notesHit = 0;
+  totalNotes = songs[currentSong][3].chart.length;
   currentTime = 0;
   sustains = [];
   FC = true;
@@ -203,6 +207,9 @@ function detectNoteHit(time, fret) {
       }
       songs[currentSong][3].chart.splice(i, 1);
       streak++;
+      if(streak > bestStreak) {
+        bestStreak = streak;
+      }
       notesHit++;
       return true;
     }
@@ -224,7 +231,8 @@ function hitNotes() {
       return;
     }
     if(fret < frets && !detectNoteHit((key[2] - startTime) / 1000, fret)) {
-      playSound((Math.random() * 32 >> 0) + 44, 0.2, 1, songs[currentSong][2].tracks[chartTrack].instrument.family, songs[currentSong][2].tracks[chartTrack].instrument.name);
+      playSound(distinctNotes[distinct[findInGroups(totalNotes - songs[currentSong][3].chart.length)[0]][fret]], 0.4, 0.9, songs[currentSong][2].tracks[chartTrack].instrument.family, songs[currentSong][2].tracks[chartTrack].instrument.name);
+
       streak = 0;
       FC = false;
     }
@@ -325,8 +333,8 @@ function drawPlayChart(x, y, w, h) {
 
   lastTone = currentTime - hitWindow * 1000;
 
-  if(currentTime / 1000 > songs[currentSong][2].duration) {
-    sb = 2;
+  if(currentTime / 1000 > songs[currentSong][2].duration + 1) {
+    sb = 5;
   }
 
   drawScoreTopDown(x, y, w, h);
@@ -338,5 +346,5 @@ function drawPlayChart(x, y, w, h) {
 }
 
 function s4() {
-  callWithinAR(0, 0, w, h, 1920 / 1080, drawPlayChart);
+  callWithinAR(0, 0, w, h, 16 / 9, drawPlayChart);
 }

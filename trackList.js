@@ -1,6 +1,32 @@
 let trackScroll = 0.02;
 
+let midiDisplay = false;
+
+function toggleMidiInput(x, y, w, h) {
+  midiDisplay = !midiDisplay;
+  document.getElementById('FileDrop').style.display = midiDisplay ? 'block' : 'none';
+  if(midiDisplay) {
+    positionMidiInput(x, y, w, h);
+  }
+}
+
+function positionMidiInput(x, y, w, h) {
+  let fd = document.getElementById('FileDrop');
+  fd.style.width = `${w * 0.3}px`;
+  fd.style.height = `${h * 0.6}px`;
+  fd.style.right = `${x + w * 0.045}px`;
+  fd.style.top = `${y + h * 0.25}px`;
+}
+
 function drawTrackList(x, y, w, h) {
+  button(
+    x + h * 0.05,
+    y + h * 0.05,
+    w * 0.2, h * 0.1,
+    a => sb = 0);
+  if(!midiDisplay) {
+    toggleMidiInput(x, y, w, h);
+  }
   if(mouseX < x + w * 0.1) {
 
   } else if(mouseY - y < 0.2 * h) {
@@ -38,7 +64,7 @@ function drawTrackList(x, y, w, h) {
 
     ctx.fillStyle = '#000';
     ctx.font = `${(songs[i][1].length>25?songs[i][1].length>33?w*0.02:w*0.03:w*0.04)>>0}px sans-serif`;
-    ctx.fillText(' '+songs[i][1],
+    ctx.fillText(' ' + songs[i][1],
       (x + w * 0.11) >> 0,
       (y + w * 0.1 * (i + (songs[i][1].length > 25 ? songs[i][1].length > 33 ? 1.5 : 1.55 : 1.6)) + trackScroll * w) >> 0);
   }

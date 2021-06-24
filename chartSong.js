@@ -1,3 +1,8 @@
+let groups;
+let distinctNotes;
+let distinct;
+
+
 function findInGroups(note) {
   for(let i = 0; i < groups.length; i++) {
     for(let j = 0; j < groups[i].length; j++) {
@@ -55,7 +60,7 @@ function chartSong(currentMidi, track) {
     }
   }
 
-  let distinctNotes = [];
+  distinctNotes = [];
   for(let note = 0; note < currentMidi.tracks[track].notes.length; note++) {
     let midValue = currentMidi.tracks[track].notes[note].hasOwnProperty('altmidi') ? currentMidi.tracks[track].notes[note].altmidi : currentMidi.tracks[track].notes[note].midi;
     if(distinctNotes.indexOf(midValue) < 0) {

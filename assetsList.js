@@ -48,3 +48,16 @@ plus.src = 'assets/plus.png';
 
 const paper = new Image();
 paper.src = 'assets/paper.png';
+
+
+const fullComboImg = new Image();
+fullComboImg.src = 'assets/fullCombo.png';
+
+const scoreImgs = [];
+
+const scoreNames = ['F','D-','D','D+','C-','C','C+','B-','B','B+','A-','A','A+','S'];
+
+for(let i=0;i<14;i++){
+  scoreImgs.push(new Image());
+  scoreImgs[i].src = `assets/${scoreNames[i]}score.png`;
+}

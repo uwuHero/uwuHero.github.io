@@ -3,29 +3,12 @@ let instrumentScroll = 0.02;
 function drawChartSettings(x, y, w, h) {
   let cSong = songs[currentSong][2];
 
+  let mins = 0;
   if(cSong) {
-    if(mouseX < x + w * 0.1) {
-
-    } else if(mouseY - y < 0.2 * h) {
-      instrumentScroll += (0.2 - (mouseY - y) / h) / 16;
-    } else if(mouseY - y > 0.8 * h) {
-      instrumentScroll -= ((mouseY - y) / h - 0.8) / 16;
-    }
-    if(instrumentScroll > 0.02) {
-      instrumentScroll = 0.02;
-    }
-    if(instrumentScroll < 0.5 - (cSong.tracks.length + 0.5) * 0.1) {
-      instrumentScroll = 0.5 - (cSong.tracks.length + 0.5) * 0.1;
-    }
-    if(cSong.tracks.length < 5) {
-      instrumentScroll = 0.02;
-    }
-
     ctx.drawImage(background, x, y, w, h);
 
-    let mins = 0;
     for(let i = 0; i < cSong.tracks.length; i++) {
-      if(cSong.tracks[i].instrument.percussion) {
+      if(cSong.tracks[i].instrument.percussion || cSong.tracks[i].notes.length === 0) {
         mins++;
         continue;
       }
@@ -48,13 +31,38 @@ function drawChartSettings(x, y, w, h) {
         (x + w * 0.11) >> 0,
         (y + w * 0.1 * ((i - mins) + (txt.length > 25 ? txt.length > 33 ? 1.5 : 1.55 : 1.6)) + instrumentScroll * w) >> 0);
     }
+
+
+    if(mouseX < x + w * 0.1) {
+
+    } else if(mouseY - y < 0.2 * h) {
+      instrumentScroll += (0.2 - (mouseY - y) / h) / 16;
+    } else if(mouseY - y > 0.8 * h) {
+      instrumentScroll -= ((mouseY - y) / h - 0.8) / 16;
+    }
+    if(instrumentScroll > 0.02) {
+      instrumentScroll = 0.02;
+    }
+    if(instrumentScroll < 0.5 - (cSong.tracks.length - mins + 0.5) * 0.1) {
+      instrumentScroll = 0.5 - (cSong.tracks.length - mins + 0.5) * 0.1;
+    }
+    if(cSong.tracks.length - mins < 5) {
+      instrumentScroll = 0.02;
+    }
   } else {
     ctx.drawImage(background, x, y, w, h);
   }
 
+
   ctx.fillStyle = colors[0];
   ctx.fillRect(0, y + h, w, h);
   ctx.drawImage(overlay, x, y, w, h);
+
+
+  ctx.font = `${(w*0.025)>>0}px sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#fff';
+  ctx.fillText(songs[currentSong][1], x + w * 0.8, y + h * 0.25);
 
   button(
     x + h * 0.05,

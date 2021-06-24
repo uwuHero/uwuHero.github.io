@@ -5,11 +5,11 @@ player.loader.decodeAfterLoading(audioContext, '_tone_0010_GeneralUserGS_sf2_fil
 player.loader.decodeAfterLoading(audioContext, '_tone_0270_Aspirin_sf2_file');
 
 function playSound(pitch, duration, vol, family, name) {
-  if(songs[currentSong].hasOwnProperty('add')){
+  if(songs[currentSong].hasOwnProperty('add')) {
     vol += songs[currentSong].add;
   }
-  vol *= volume/50;
-  if(songs[currentSong].hasOwnProperty('volume')){
+  vol *= volume / 50;
+  if(songs[currentSong].hasOwnProperty('volume')) {
     vol *= songs[currentSong].volume;
   }
   switch (family) {
@@ -18,13 +18,28 @@ function playSound(pitch, duration, vol, family, name) {
       break;
     case 'bass':
     case 'guitar':
-      player.queueWaveTable(audioContext, audioContext.destination, _tone_0270_Aspirin_sf2_file, 0, pitch, duration < 0.18 ? 0.18 : duration, vol);
+      switch (name) {
+        case 'electric guitar (muted)':
+          player.queueWaveTable(audioContext, audioContext.destination, _tone_0280_Aspirin_sf2_file, 0, pitch, duration < 0.18 ? 0.18 : duration, vol);
+          break;
+        default://electric guitar (clean)
+          player.queueWaveTable(audioContext, audioContext.destination, _tone_0270_Aspirin_sf2_file, 0, pitch, duration < 0.18 ? 0.18 : duration, vol);
+      }
       break;
     case 'ensemble':
       player.queueWaveTable(audioContext, audioContext.destination, _tone_0481_GeneralUserGS_sf2_file, 0, pitch, duration < 0.18 ? 0.18 : duration, vol);
       break;
+    case 'organ':
+      switch (name) {
+        case 'reed organ':
+          player.queueWaveTable(audioContext, audioContext.destination, _tone_0200_SBLive_sf2, 0, pitch, duration < 0.18 ? 0.18 : duration, vol);
+          break;
+        default: //rock organ
+          player.queueWaveTable(audioContext, audioContext.destination, _tone_0180_Chaos_sf2_file, 0, pitch, duration < 0.18 ? 0.18 : duration, vol);
+      }
+      break;
     case 'drums':
-      drumSound.volume(vol*2);
+      drumSound.volume(vol * 2);
       drumSound.play(pitch - 26 + '');
       break;
     default:
