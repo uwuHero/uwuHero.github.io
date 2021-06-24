@@ -12,24 +12,26 @@ function drawChartSettings(x, y, w, h) {
         mins++;
         continue;
       }
-      button(
-        (x + w * 0.1) >> 0,
-        (y + w * 0.1 * ((i - mins) + 1) + instrumentScroll * w) >> 0,
-        w * 0.5,
-        w * 0.08,
-        a => {
-          songs[currentSong][3] = chartSong(cSong, i);
-          chartTrack = i;
-          startSong();
-          sb = 4;
-        }, paper, paper);
+      if((w * 0.1 * ((i - mins) + 1) + instrumentScroll * w) >> 0 > 0) {
+        button(
+          (x + w * 0.1) >> 0,
+          (y + w * 0.1 * ((i - mins) + 1) + instrumentScroll * w) >> 0,
+          w * 0.5,
+          w * 0.08,
+          a => {
+            songs[currentSong][3] = chartSong(cSong, i);
+            chartTrack = i;
+            startSong();
+            sb = 4;
+          }, paper, paper);
 
-      ctx.fillStyle = '#000';
-      let txt = (i > 0 && cSong.tracks[i - 1].instrument.name == cSong.tracks[i].instrument.name ? (cSong.tracks[i].notes[0].midi < 60 ? 'bass ' : '') : '') + (cSong.tracks.length > 6 ? cSong.tracks[i].instrument.name : cSong.tracks[i].instrument.family);
-      ctx.font = `${(txt.length>25?txt.length>33?w*0.02:w*0.03:w*0.04)>>0}px sans-serif`;
-      ctx.fillText(' ' + txt,
-        (x + w * 0.11) >> 0,
-        (y + w * 0.1 * ((i - mins) + (txt.length > 25 ? txt.length > 33 ? 1.5 : 1.55 : 1.6)) + instrumentScroll * w) >> 0);
+        ctx.fillStyle = '#000';
+        let txt = (i > 0 && cSong.tracks[i - 1].instrument.name == cSong.tracks[i].instrument.name ? (cSong.tracks[i].notes[0].midi < 60 ? 'bass ' : '') : '') + (cSong.tracks.length > 6 ? cSong.tracks[i].instrument.name : cSong.tracks[i].instrument.family);
+        ctx.font = `${(txt.length>25?txt.length>33?w*0.02:w*0.03:w*0.04)>>0}px sans-serif`;
+        ctx.fillText(' ' + txt,
+          (x + w * 0.11) >> 0,
+          (y + w * 0.1 * ((i - mins) + (txt.length > 25 ? txt.length > 33 ? 1.5 : 1.55 : 1.6)) + instrumentScroll * w) >> 0);
+      }
     }
 
 
