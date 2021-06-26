@@ -1,22 +1,14 @@
 let currentSong = 0;
 let songs = [
-  ['songs/Free_Bird.mid', 'Free Bird'],
-  ['songs/scale.mid', 'Scale'],
-
   ['songs/Canon_in_D.mid', 'Canon in D'],
-  ['songs/The_Entertainer.mid','The Entertainer'],
-  ['songs/Megalovania.mid', 'Megalovania'],
-  ['songs/Mario_Medley.mid', 'Mario Medley'],
 
-  ['songs/Albeniz-Granada.mid', 'Albeniz-Granada'],
-  ['songs/Bydlo.mid', 'Bydlo'],
-  ['songs/Deux_arabesques.mid', 'Deux arabesques'],
-  ['songs/Erlkonig.mid', 'Erlkonig'],
-  ['songs/Gnomus.mid', 'Gnomus'],
+  ['songs/La_fille_aux_cheveux_de_lin.mid', 'La Fille aux cheveux de lin'],
   ['songs/Habanera.mid', 'Habanera'],
-  ['songs/La_fille_aux_cheveux_de_lin.mid', 'La fille aux cheveux de lin'],
+  ['songs/The_Entertainer.mid','The Entertainer'],
   ['songs/The_Moldau.mid', 'The Moldau'],
-  ['songs/Moonlight_Sonata_3rd_Movement.mid', 'Moonlight Sonata 3rd Movement'],
+
+  ['songs/Fur_Elise.mid', 'Für Elise'],
+  ['songs/Rondo_alla_Turca.mid', 'Rondo alla Turca'],
 ];
 
 //songs[0].volume = 1;

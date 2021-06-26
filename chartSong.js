@@ -4,6 +4,9 @@ let distinct;
 
 
 function findInGroups(note) {
+  if(note >= unChartedNotes.length) {
+    return [groups.length - 1, groups[groups.length - 1].length - 1];
+  }
   for(let i = 0; i < groups.length; i++) {
     for(let j = 0; j < groups[i].length; j++) {
       if(groups[i][j] === note) {
