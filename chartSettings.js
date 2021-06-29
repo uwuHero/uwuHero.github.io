@@ -31,6 +31,23 @@ function drawChartSettings(x, y, w, h) {
         ctx.fillText(' ' + txt,
           (x + w * 0.11) >> 0,
           (y + w * 0.1 * ((i - mins) + (txt.length > 25 ? txt.length > 33 ? 1.5 : 1.55 : 1.6)) + instrumentScroll * w) >> 0);
+
+        if(!songs[currentSong].hasOwnProperty('hashes')) {
+          songs[currentSong].hashes = {};
+        }
+
+        if(!songs[currentSong].hashes.hasOwnProperty(i)) {
+          songs[currentSong].hashes[i] = CryptoJS.SHA1(
+            JSON.stringify(songs[currentSong][2].tracks[i].notes)
+          ).toString(CryptoJS.enc.Base64);
+        }
+
+        if(highScores.hasOwnProperty(songs[currentSong].hashes[i])) {
+          if(!highScores[songs[currentSong].hashes[i]].hasOwnProperty(`${frets},${maxNotes}`)) {
+            continue;
+          }
+          drawStars(i - mins, highScores[songs[currentSong].hashes[i]][`${frets},${maxNotes}`], x, y, w, h);
+        }
       }
     }
 

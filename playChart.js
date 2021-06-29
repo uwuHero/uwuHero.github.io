@@ -3,6 +3,8 @@ let chartTrack = 0;
 let currentTime = -Infinity;
 let lastTime = -Infinity;
 let lastTone = -Infinity;
+const VOLUME_BUFFER = 6;
+let lastVolume;
 let startTime = 0;
 
 let holdingKeys = [];
@@ -81,6 +83,12 @@ function startSong() {
   currentTime = 0;
   sustains = [];
   FC = true;
+  lastVolume = [];
+  for(let i = 0; i < VOLUME_BUFFER; i++) {
+    if(songs[currentSong][2].tracks[chartTrack].notes.length >= i) {
+      lastVolume.push(songs[currentSong][2].tracks[chartTrack].notes[i].velocity);
+    }
+  }
 }
 
 function drawLinesTopDown(midi, x, y, w, h) {
@@ -231,7 +239,10 @@ function hitNotes() {
       return;
     }
     if(fret < frets && !detectNoteHit((key[2] - startTime) / 1000, fret)) {
-      playSound(distinctNotes[distinct[findInGroups(totalNotes - songs[currentSong][3].chart.length)[0]][fret]], 0.4, 0.9, songs[currentSong][2].tracks[chartTrack].instrument.family, songs[currentSong][2].tracks[chartTrack].instrument.name);
+      playSound(distinctNotes[distinct[findInGroups(totalNotes - songs[currentSong][3].chart.length)[0]][fret]], 0.4,
+        lastVolume.reduce((a, b) => a + b) / lastVolume.length,
+        songs[currentSong][2].tracks[chartTrack].instrument.family,
+        songs[currentSong][2].tracks[chartTrack].instrument.name);
 
       streak = 0;
       FC = false;
@@ -249,6 +260,10 @@ function playSong(track, gameTrack) {
     }
     if(gameTrack && notesHit > 0 && streak == 0) {
       return;
+    }
+    if(gameTrack) {
+      lastVolume.shift();
+      lastVolume.push(track.notes[i].velocity);
     }
     playSound(track.notes[i].midi, track.notes[i].duration, track.notes[i].velocity, track.instrument.family, track.instrument.name);
   }
@@ -335,6 +350,7 @@ function drawPlayChart(x, y, w, h) {
 
   if(currentTime / 1000 > songs[currentSong][2].duration + 1) {
     sb = 5;
+    addHighScore();
   }
 
   drawScoreTopDown(x, y, w, h);

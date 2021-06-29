@@ -18,6 +18,32 @@ function positionMidiInput(x, y, w, h) {
   fd.style.top = `${y + h * 0.25}px`;
 }
 
+function drawStars(song, bestV, x, y, w, h) {
+  if(bestV[1]) {
+    ctx.drawImage(listFullCombo,
+      (x + w * 0.1) >> 0,
+      (y + w * 0.1 * (song + 1) + trackScroll * w) >> 0,
+      w * 0.5,
+      w * 0.08)
+    return;
+  }
+
+  for(let i = 2; i <= bestV[0]; i += 2) {
+    ctx.drawImage(star,
+      (x + w * (0.585 - i * 0.018)) >> 0,
+      (y + w * 0.1 * (song + 1) + w * 0.02 + trackScroll * w) >> 0,
+      w * 0.04,
+      w * 0.04);
+  }
+  if(bestV[0] % 2 && bestV[0] < 13) {
+    ctx.drawImage(halfStar,
+      (x + w * (0.565 - bestV[0] * 0.018)) >> 0,
+      (y + w * 0.1 * (song + 1) + w * 0.02 + trackScroll * w) >> 0,
+      w * 0.04,
+      w * 0.04);
+  }
+}
+
 function drawTrackList(x, y, w, h) {
   button(
     x + h * 0.05,
@@ -63,11 +89,29 @@ function drawTrackList(x, y, w, h) {
       }, paper, paper);
 
     ctx.fillStyle = '#000';
-    ctx.font = `${(songs[i][1].length>25?songs[i][1].length>33?w*0.02:w*0.03:w*0.04)>>0}px sans-serif`;
+    ctx.font = `${(songs[i][1].length > 16 ? songs[i][1].length > 24 ? w * 0.02 : w * 0.03 : w * 0.04) >> 0}px sans-serif`;
     ctx.fillText(' ' + songs[i][1],
       (x + w * 0.11) >> 0,
-      (y + w * 0.1 * (i + (songs[i][1].length > 25 ? songs[i][1].length > 33 ? 1.5 : 1.55 : 1.6)) + trackScroll * w) >> 0);
+      (y + w * 0.1 * (i + (songs[i][1].length > 16 ? songs[i][1].length > 24 ? 1.5 : 1.55 : 1.6)) + trackScroll * w) >> 0);
+
+    if(songs[i].hasOwnProperty('hashes')) {
+      let best = -1;
+      let bestV = [];
+
+      for(let hash in songs[i].hashes) {
+        if(!highScores.hasOwnProperty(songs[i].hashes[hash]) || !highScores[songs[i].hashes[hash]].hasOwnProperty(`${frets},${maxNotes}`)) {
+          continue;
+        }
+        let currentScore = (highScores[songs[i].hashes[hash]][`${frets},${maxNotes}`][1] ? 1 : 0) + highScores[songs[i].hashes[hash]][`${frets},${maxNotes}`][2];
+        if(currentScore > best) {
+          best = currentScore;
+          bestV = highScores[songs[i].hashes[hash]][`${frets},${maxNotes}`];
+        }
+      }
+      drawStars(i, bestV, x, y, w, h);
+    }
   }
+
   ctx.fillStyle = colors[0];
   ctx.fillRect(0, y + h, w, h);
   ctx.drawImage(overlay, x, y, w, h);

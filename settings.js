@@ -100,8 +100,35 @@ let lefty = false;
 
 let highway = 0;
 
+let highScores = {};
+
+function addHighScore() {
+  let myScore = 0;
+  let per = notesHit / totalNotes * 100;
+
+  while(per >= scoreThresholds[myScore]) {
+    myScore++;
+  }
+
+  let hash = CryptoJS.SHA1(
+    JSON.stringify(songs[currentSong][2].tracks[chartTrack].notes)
+  ).toString(CryptoJS.enc.Base64);
+
+  if(!highScores.hasOwnProperty(hash)) {
+    highScores[hash] = {};
+  }
+
+  if(highScores[hash].hasOwnProperty(`${frets},${maxNotes}`)) {
+    if((FC ? 1 : 0) + per < (highScores[hash][`${frets},${maxNotes}`][1] ? 1 : 0) + highScores[hash][`${frets},${maxNotes}`][2]) {
+      return;
+    }
+  }
+
+  highScores[hash][`${frets},${maxNotes}`] = [myScore, FC, per];
+}
+
 function keyName(code) {
-  if(code >= 256){
+  if(code >= 256) {
     return `P${code/256>>0}-${(code%256)+1}`;
   }
   if(code > 47 && code < 91) {

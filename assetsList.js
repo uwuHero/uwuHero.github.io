@@ -16,6 +16,15 @@ exitFullscreenb.src = 'assets/exitFullscreenb.png';
 
 
 
+const listFullCombo = new Image();
+listFullCombo.src = 'assets/listFullCombo.png';
+
+const star = new Image();
+star.src = 'assets/star.png';
+
+const halfStar = new Image();
+halfStar.src = 'assets/half-star.png';
+
 const uwu = new Image();
 uwu.src = 'assets/uwu.png';
 
