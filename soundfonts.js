@@ -4,6 +4,38 @@ let player = new WebAudioFontPlayer();
 player.loader.decodeAfterLoading(audioContext, '_tone_0010_GeneralUserGS_sf2_file');
 player.loader.decodeAfterLoading(audioContext, '_tone_0270_Aspirin_sf2_file');
 
+function soundfontVariable(family, name) {
+  switch (family) {
+    case 'synth lead':
+      return _tone_0800_Aspirin_sf2_file;
+      break;
+    case 'bass':
+    case 'guitar':
+      switch (name) {
+        case 'electric guitar (muted)':
+          return _tone_0280_Aspirin_sf2_file;
+          break;
+        default: //electric guitar (clean)
+          return _tone_0270_Aspirin_sf2_file;
+      }
+      break;
+    case 'ensemble':
+      return _tone_0481_GeneralUserGS_sf2_file;
+      break;
+    case 'organ':
+      switch (name) {
+        case 'reed organ':
+          return _tone_0200_SBLive_sf2;
+          break;
+        default: //rock organ
+          return _tone_0180_Chaos_sf2_file;
+      }
+      break;
+    default:
+      return _tone_0010_GeneralUserGS_sf2_file;
+  }
+}
+
 function playSound(pitch, duration, vol, family, name) {
   if(songs[currentSong].hasOwnProperty('add')) {
     vol += songs[currentSong].add;
@@ -16,34 +48,12 @@ function playSound(pitch, duration, vol, family, name) {
     case 'synth lead':
       player.queueWaveTable(audioContext, audioContext.destination, _tone_0800_Aspirin_sf2_file, 0, pitch, duration, vol);
       break;
-    case 'bass':
-    case 'guitar':
-      switch (name) {
-        case 'electric guitar (muted)':
-          player.queueWaveTable(audioContext, audioContext.destination, _tone_0280_Aspirin_sf2_file, 0, pitch, duration < 0.18 ? 0.18 : duration, vol);
-          break;
-        default://electric guitar (clean)
-          player.queueWaveTable(audioContext, audioContext.destination, _tone_0270_Aspirin_sf2_file, 0, pitch, duration < 0.18 ? 0.18 : duration, vol);
-      }
-      break;
-    case 'ensemble':
-      player.queueWaveTable(audioContext, audioContext.destination, _tone_0481_GeneralUserGS_sf2_file, 0, pitch, duration < 0.18 ? 0.18 : duration, vol);
-      break;
-    case 'organ':
-      switch (name) {
-        case 'reed organ':
-          player.queueWaveTable(audioContext, audioContext.destination, _tone_0200_SBLive_sf2, 0, pitch, duration < 0.18 ? 0.18 : duration, vol);
-          break;
-        default: //rock organ
-          player.queueWaveTable(audioContext, audioContext.destination, _tone_0180_Chaos_sf2_file, 0, pitch, duration < 0.18 ? 0.18 : duration, vol);
-      }
-      break;
     case 'drums':
       drumSound.volume(vol * 2);
       drumSound.play(pitch - 26 + '');
       break;
     default:
-      player.queueWaveTable(audioContext, audioContext.destination, _tone_0010_GeneralUserGS_sf2_file, 0, pitch, duration < 0.18 ? 0.18 : duration, vol);
+      player.queueWaveTable(audioContext, audioContext.destination, soundfontVariable(family, name), 0, pitch, duration < 0.18 ? 0.18 : duration, vol);
   }
 }
 

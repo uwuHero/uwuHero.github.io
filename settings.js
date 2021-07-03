@@ -140,7 +140,79 @@ function keyName(code) {
   return code;
 }
 
+let notes = [0, 2, 4, 5, 7, 9, 11];
+
+let pianoSounds = {};
+let pianoHotkeys = {};
+let transpose = 0;
+
+function playPiano() {
+  while(keys.length) {
+    let key = keys.shift();
+    fret = keyBindings.notes.indexOf(key[0]);
+    if(fret < 0 || fret >= frets || holdingKeys[fret] === key[1]) {
+      console.log(key);
+      if(!pianoHotkeys.hasOwnProperty(key[0]) || !pianoHotkeys[key[0]]) {
+        switch (key[0]) {
+          case 38:
+          case 16:
+            transpose++;
+            break;
+          case 40:
+          case 17:
+          case 32:
+            transpose--;
+            break;
+          case 13:
+          case 39:
+            transpose += 12;
+            break;
+          case 8:
+          case 18:
+          case 37:
+            transpose -= 12;
+            break;
+          default:
+            return;
+        }
+      } else if(!key[1]) {
+        switch (key[0]) {
+          case 16:
+            transpose--;
+            break;
+          case 17:
+          case 32:
+            transpose++;
+            break;
+          case 13:
+            transpose -= 12;
+            break;
+          case 8:
+          case 18:
+            transpose += 12;
+            break;
+        }
+      }
+      pianoHotkeys[key[0]] = key[1];
+      return;
+    }
+    holdingKeys[fret] = key[1];
+    if(!key[1]) {
+      if(pianoSounds.hasOwnProperty(fret)) {
+        pianoSounds[fret].cancel();
+        delete pianoSounds[fret];
+      }
+      return;
+    }
+    if(fret < frets) {
+      pianoSounds[fret] = player.queueWaveTable(audioContext, audioContext.destination, _tone_0010_GeneralUserGS_sf2_file, 0,
+        60 + transpose + notes[fret % 7] + (fret / 7 >> 0) * 12, 999, volume / 50);
+    }
+  }
+}
+
 function drawSettings(x, y, w, h) {
+  playPiano();
   ctx.drawImage(background, x, y, w, h);
 
   ctx.fillStyle = '#fff';
@@ -340,11 +412,23 @@ function drawSettings(x, y, w, h) {
     x + h * 0.05,
     y + h * 0.05,
     w * 0.2, h * 0.1,
-    a => sb = 0, backImg, backImgb);
+    a => {
+      for(let sound in pianoSounds) {
+        pianoSounds[sound].cancel();
+        delete pianoSounds[sound];
+      }
+      sb = 0;
+    }, backImg, backImgb);
 
   highways[highway](x - w, y + h * 0.8, w * 3, h * 0.2);
+  for(let i = 0; i < frets; i++) {
+    if(holdingKeys[i]) {
+      ctx.fillStyle = fretPalette[colorPalette][fretColors[colorMode][frets - 1][i]];
+      ctx.fillRect(x + i * w / frets, y + h * 0.9, w / frets, h * 0.1);
+    }
+  }
   ctx.fillStyle = '#fff';
-  for(let i = 1; i <= frets; i++) {
+  for(let i = 1; i <= frets - 1; i++) {
     ctx.fillRect(x + i * w / frets, y + h * 0.8, 1, h * 0.2);
   }
   ctx.font = `${(w*0.025)>>0}px sans-serif`;

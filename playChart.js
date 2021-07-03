@@ -236,13 +236,25 @@ function hitNotes() {
     }
     holdingKeys[fret] = key[1];
     if(!key[1]) {
+      if(pianoSounds.hasOwnProperty(fret)) {
+        pianoSounds[fret].cancel();
+        delete pianoSounds[fret];
+      }
       return;
     }
     if(fret < frets && !detectNoteHit((key[2] - startTime) / 1000, fret)) {
-      playSound(distinctNotes[distinct[findInGroups(totalNotes - songs[currentSong][3].chart.length)[0]][fret]], 0.4,
-        lastVolume.reduce((a, b) => a + b) / lastVolume.length,
-        songs[currentSong][2].tracks[chartTrack].instrument.family,
-        songs[currentSong][2].tracks[chartTrack].instrument.name);
+      //playSound(distinctNotes[distinct[findInGroups(totalNotes - songs[currentSong][3].chart.length)[0]][fret]], 0.4,
+      //  lastVolume.reduce((a, b) => a + b) / lastVolume.length,
+      //  songs[currentSong][2].tracks[chartTrack].instrument.family,
+      //  songs[currentSong][2].tracks[chartTrack].instrument.name);
+
+
+      pianoSounds[fret] = player.queueWaveTable(audioContext, audioContext.destination,
+        soundfontVariable(songs[currentSong][2].tracks[chartTrack].instrument.family,
+          songs[currentSong][2].tracks[chartTrack].instrument.name),
+        0,
+        distinctNotes[distinct[findInGroups(totalNotes - songs[currentSong][3].chart.length)[0]][fret]], 999,
+        (lastVolume.reduce((a, b) => a + b) / lastVolume.length) * volume / 50);
 
       streak = 0;
       FC = false;

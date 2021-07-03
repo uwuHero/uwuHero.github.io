@@ -117,7 +117,7 @@ function drawCanvas(t) {
     scene = sb;
     scroll = 0;
   }
-  if(scene != 4) {
+  if(scene !== 4 && scene !== 1) {
     keys = [];
   }
   if(scene != 2 && midiDisplay) {
