@@ -228,7 +228,7 @@ function hitNotes() {
   while(keys.length) {
     let key = keys.shift();
     if(keyBindings.back.indexOf(key[0]) >= 0) {
-      sb = 2;
+      sb = 6;
     }
     fret = keyBindings.notes.indexOf(key[0]);
     if(fret < 0 || fret >= frets || holdingKeys[fret] === key[1]) {
@@ -270,6 +270,7 @@ function playSong(track, gameTrack) {
 }
 
 let streakColors = ['#888', '#ff8844', '#88ff88', '#aaccff', '#ff88ff', '#fff'];
+let scoreColors = ['#f00', 'rgb(128,65,121)', 'rgb(146,76,139)', 'rgb(177,68,166)', 'rgb(163,75,184)', 'rgb(142,59,184)', 'rgb(129,48,190)', 'rgb(107,59,184)', 'rgb(65,108,218)', 'rgb(65,169,218)', 'rgb(65,218,155)', 'rgb(109,221,155)', 'rgb(109,221,112)', 'rgb(225,209,14)'];
 
 function drawScoreTopDown(x, y, w, h) {
   //ctx.font = `${(h*0.5)>>0}px sans-serif`;
@@ -282,6 +283,62 @@ function drawScoreTopDown(x, y, w, h) {
   for(let i = 0; i < 10; i++) {
     ctx.fillStyle = streakColors[(((streak / 10 >> 0) - 1 + (i < streak % 10 ? 1 : 0)) % 5) + 1];
     ctx.fillRect(x + w / 3 * 2, y + h - h / 10 * (i + 7 / 8), w / 64, h / 40 * 3);
+  }
+
+  ctx.fillStyle = '#888';
+  ctx.fillRect(
+    x + w * 2 / 3 + w / 64 + w * 0.01,
+    y + h / 2 + h * 0.005,
+    w * 1 / 3 - w / 64 - w * 0.02,
+    h * 0.02);
+
+  ctx.fillStyle = '#00d700';
+  ctx.fillRect(
+    x + w * 2 / 3 + w / 64 + w * 0.01,
+    y + h / 2 + h * 0.005,
+    (w * 1 / 3 - w / 64 - w * 0.02) * Math.max(0, Math.min(1, currentTime / 1000 / songs[currentSong][2].duration)),
+    h * 0.02);
+
+
+  let myScore = 0;
+  let per = notesHit / (totalNotes - songs[currentSong][3].chart.length) * 100;
+  if(totalNotes === songs[currentSong][3].chart.length) {
+    per = 100;
+  }
+
+  while(per >= scoreThresholds[myScore]) {
+    myScore++;
+  }
+
+
+  ctx.fillStyle = scoreColors[Math.max(0, myScore - 1)];
+  ctx.fillRect(
+    x + w * 2 / 3 + w / 64 + w * 0.01,
+    y + h / 2 - h * 0.025,
+    w * 1 / 3 - w / 64 - w * 0.02,
+    h * 0.02);
+
+  ctx.fillStyle = scoreColors[myScore];
+  ctx.fillRect(
+    x + w * 2 / 3 + w / 64 + w * 0.01,
+    y + h / 2 - h * 0.025,
+    (w * 1 / 3 - w / 64 - w * 0.02) * (per === 100 ? 1 : (per - scoreThresholds[myScore - 1]) / (scoreThresholds[myScore] - scoreThresholds[myScore - 1])),
+    h * 0.02);
+
+
+  ctx.fillStyle = '#000';
+
+  ctx.fillRect(
+    x - 1 + w * 2 / 3 + w / 64 + w * 0.01 + (w * 1 / 3 - w / 64 - w * 0.02) * ((per - scoreThresholds[myScore - 1]) / (scoreThresholds[myScore] - scoreThresholds[myScore - 1])),
+    y + h / 2 - h * 0.025,
+    3,
+    h * 0.02);
+
+
+  ctx.drawImage(scoreImgs[myScore], x + w * 2 / 3 + w / 64, y + h * 0.35, h / 8, h / 8);
+  if(FC) {
+
+    ctx.drawImage(listFullCombo, x + w * 1.15 / 3 + w / 64, y + h * 0.35, h / 6 * 6.25, h / 6);
   }
 }
 

@@ -21,7 +21,8 @@ let w = c.width,
   FPSCounter = false;
 
 let mouseX = 0,
-  mouseY = 0;
+  mouseY = 0,
+  scroll = 0;
 
 /**
  * button - draws a rectangular button with an image & hover-image
@@ -96,7 +97,7 @@ function imgaeWithinAR(img, ar, x, y, w, h) {
 let scene = 0,
   sb = 0;
 
-const scenes = [s0, s1, s2, s3, s4, s5];
+const scenes = [s0, s1, s2, s3, s4, s5, s6];
 
 let lt = Date.now();
 let ti = lt;
@@ -107,8 +108,15 @@ function drawCanvas(t) {
   ctx.fillStyle = colors[0];
   ctx.fillRect(0, 0, w, h);
 
+  if(sb !== scene) {
+    scene = sb;
+    scroll = 0;
+  }
   scenes[scene]();
-  scene = sb;
+  if(sb !== scene) {
+    scene = sb;
+    scroll = 0;
+  }
   if(scene != 4) {
     keys = [];
   }
@@ -182,12 +190,12 @@ function pollGamepads() {
     if(gp) {
       for(let j = 0; j < gp.buttons.length; j++) {
         let pr = gp.buttons[j].pressed;
-        if(gamepadKeys[i][j] !== pr){
+        if(gamepadKeys[i][j] !== pr) {
           gamepadKeys[i][j] = pr;
-          keys.push([256+256*i+j, pr, Date.now()]);
+          keys.push([256 + 256 * i + j, pr, Date.now()]);
 
           if(pr && binding >= 0) {
-            keyBindings.notes[binding] = 256+256*i+j;
+            keyBindings.notes[binding] = 256 + 256 * i + j;
             binding = -1;
           }
         }
@@ -196,7 +204,7 @@ function pollGamepads() {
   }
 }
 
-gamepadInterval = setInterval(pollGamepads, 10);
+let gamepadInterval = setInterval(pollGamepads, 1);
 
 function gamepadHandler(event, connecting) {
   let gamepad = event.gamepad;
@@ -260,6 +268,16 @@ document.onkeydown = (event) => {
 
 document.onkeyup = (event) => {
   keys.push([event.keyCode, false, Date.now()]);
+}
+
+document.body.onblur = (event) => {
+  if(scene === 4) {
+    sb = 6;
+  }
+}
+
+document.onwheel = (event) => {
+  scroll += event.deltaY;
 }
 
 document.addEventListener('contextmenu', event => event.preventDefault());

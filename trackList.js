@@ -1,4 +1,5 @@
 let trackScroll = 0.02;
+let trackScrollAt = 0.02;
 
 let midiDisplay = false;
 
@@ -22,7 +23,7 @@ function drawStars(song, bestV, x, y, w, h) {
   if(bestV[1]) {
     ctx.drawImage(listFullCombo,
       (x + w * 0.1) >> 0,
-      (y + w * 0.1 * (song + 1) + trackScroll * w) >> 0,
+      (y + w * 0.1 * (song + 1) + trackScrollAt * w) >> 0,
       w * 0.5,
       w * 0.08)
     return;
@@ -31,14 +32,14 @@ function drawStars(song, bestV, x, y, w, h) {
   for(let i = 2; i <= bestV[0]; i += 2) {
     ctx.drawImage(star,
       (x + w * (0.585 - i * 0.018)) >> 0,
-      (y + w * 0.1 * (song + 1) + w * 0.02 + trackScroll * w) >> 0,
+      (y + w * 0.1 * (song + 1) + w * 0.02 + trackScrollAt * w) >> 0,
       w * 0.04,
       w * 0.04);
   }
   if(bestV[0] % 2 && bestV[0] < 13) {
     ctx.drawImage(halfStar,
       (x + w * (0.565 - bestV[0] * 0.018)) >> 0,
-      (y + w * 0.1 * (song + 1) + w * 0.02 + trackScroll * w) >> 0,
+      (y + w * 0.1 * (song + 1) + w * 0.02 + trackScrollAt * w) >> 0,
       w * 0.04,
       w * 0.04);
   }
@@ -53,6 +54,8 @@ function drawTrackList(x, y, w, h) {
   if(!midiDisplay) {
     toggleMidiInput(x, y, w, h);
   }
+  trackScroll -= scroll / 1000;
+  scroll = 0;
   if(mouseX < x + w * 0.1) {
 
   } else if(mouseY - y < 0.2 * h) {
@@ -71,15 +74,21 @@ function drawTrackList(x, y, w, h) {
     trackScroll = 0.02;
   }
 
+  if(Math.abs(trackScroll - trackScrollAt) < 0.0005) {
+    trackScrollAt = trackScroll;
+  }
+
+  trackScrollAt += (trackScroll - trackScrollAt) / 10;
+
   ctx.drawImage(background, x, y, w, h);
   for(let i = 0; i < songs.length; i++) {
-    if(y + w * 0.1 * (i + 1) + trackScroll * w < y ||
-      y + w * 0.1 * (i + 1) + trackScroll * w > y + h) {
+    if(y + w * 0.1 * (i + 1) + trackScrollAt * w < y ||
+      y + w * 0.1 * (i + 1) + trackScrollAt * w > y + h) {
       continue;
     }
     button(
       (x + w * 0.1) >> 0,
-      (y + w * 0.1 * (i + 1) + trackScroll * w) >> 0,
+      (y + w * 0.1 * (i + 1) + trackScrollAt * w) >> 0,
       w * 0.5,
       w * 0.08,
       a => {
@@ -92,7 +101,7 @@ function drawTrackList(x, y, w, h) {
     ctx.font = `${(songs[i][1].length > 16 ? songs[i][1].length > 24 ? w * 0.02 : w * 0.03 : w * 0.04) >> 0}px sans-serif`;
     ctx.fillText(' ' + songs[i][1],
       (x + w * 0.11) >> 0,
-      (y + w * 0.1 * (i + (songs[i][1].length > 16 ? songs[i][1].length > 24 ? 1.5 : 1.55 : 1.6)) + trackScroll * w) >> 0);
+      (y + w * 0.1 * (i + (songs[i][1].length > 16 ? songs[i][1].length > 24 ? 1.5 : 1.55 : 1.6)) + trackScrollAt * w) >> 0);
 
     if(songs[i].hasOwnProperty('hashes')) {
       let best = -1;
