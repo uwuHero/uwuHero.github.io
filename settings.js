@@ -94,7 +94,7 @@ var keyCodes = {
 let hyperSpeed = 7 / 3;
 let hyperSpeedV = 3;
 
-let colorMode = 0;
+let colorMode = 1;
 let colorPalette = 0;
 let lefty = false;
 

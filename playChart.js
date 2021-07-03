@@ -335,7 +335,7 @@ function drawScoreTopDown(x, y, w, h) {
     h * 0.02);
 
 
-  ctx.drawImage(scoreImgs[myScore], x + w * 2 / 3 + w / 64, y + h * 0.35, h / 8, h / 8);
+  ctx.drawImage(scoreImgs[myScore], x + w * 2 / 3 + w / 64 + w * 0.01, y + h * 0.35, h / 8, h / 8);
   if(FC) {
 
     ctx.drawImage(listFullCombo, x + w * 1.15 / 3 + w / 64, y + h * 0.35, h / 6 * 6.25, h / 6);

@@ -25,13 +25,6 @@ star.src = 'assets/star.png';
 const halfStar = new Image();
 halfStar.src = 'assets/half-star.png';
 
-const uwu = new Image();
-uwu.src = 'assets/uwu.png';
-
-const uwu2 = new Image();
-uwu2.src = 'assets/uwu2.png';
-const uwu2b = new Image();
-uwu2b.src = 'assets/uwu2.png';
 
 const playImg = new Image();
 playImg.src = 'assets/play.png';
