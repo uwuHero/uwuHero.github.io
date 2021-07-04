@@ -82,12 +82,20 @@
   <script>
     window.dataLayer = window.dataLayer || [];
 
+    let acceptedTerms = false;
+
     function gtag() {
       dataLayer.push(arguments);
     }
     gtag('js', new Date());
 
     gtag('config', 'G-J6SLXL2863');
+
+    function g() {
+      if (acceptedTerms) {
+        dataLayer.push(arguments);
+      }
+    }
   </script>
 </head>
 

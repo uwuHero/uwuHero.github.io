@@ -36,6 +36,7 @@ var keyCodes = {
   20: 'caps',
   21: 'hangul',
   25: 'hanja',
+  27: 'esc',
   28: 'cnvrsn',
   29: 'n-cnvrsn',
   32: 'space',
@@ -68,6 +69,30 @@ var keyCodes = {
   103: 'np 7',
   104: 'np 8',
   105: 'np 9',
+
+  106: 'np *',
+  107: 'np +',
+
+  109: 'np -',
+  110: 'np .',
+  111: 'np /',
+
+  112: 'F1',
+  113: 'F2',
+  114: 'F3',
+  115: 'F4',
+  116: 'F5',
+  117: 'F6',
+  118: 'F7',
+  119: 'F8',
+  120: 'F9',
+  121: 'F10',
+  122: 'F11',
+  123: 'F12',
+
+  144: 'numL',
+  145: 'scrL',
+
   160: '^',
   161: '!',
   162: ';',
@@ -75,8 +100,13 @@ var keyCodes = {
   164: '$',
   165: 'u',
   172: 'home',
-  193: '?',
-  223: '`',
+
+  173: 'mute',
+  174: 'vol-',
+  175: 'vol+',
+
+  182: 'comp',
+  183: 'calc',
 
   188: ',',
   186: ';',
@@ -85,10 +115,14 @@ var keyCodes = {
   190: '.',
   191: '/',
   192: '`',
+  193: '?',
   194: '.',
+
   219: '[',
   220: '\\',
-  221: ']'
+  221: ']',
+  222: '\'',
+  223: '`',
 };
 
 let hyperSpeed = 7 / 3;
@@ -434,9 +468,10 @@ function drawSettings(x, y, w, h) {
   ctx.font = `${(w*0.025)>>0}px sans-serif`;
   for(let i = 0; i < frets; i++) {
     button(
-      x + w * (i + 0.5) / frets - w * 0.04,
-      y + h * 0.8 + w * 0.01,
-      w * 0.08, w * 0.08,
+      x + i * w / frets - 1,
+      y + h * 0.85,
+      w / frets + 2,
+      h * 0.1,
       a => {
         binding = i;
         keyBindings.notes[i] = -1;
@@ -445,12 +480,13 @@ function drawSettings(x, y, w, h) {
     ctx.fillStyle = fretPalette[colorPalette][fretColors[colorMode][frets - 1][i]];
 
     ctx.fillRect(
-      x + w * (i + 0.5) / frets - w * 0.04,
-      y + h * 0.8 + w * 0.01,
-      w * 0.08, w * 0.04);
+      x + i * w / frets - 1,
+      y + h * 0.85,
+      w / frets + 2,
+      h * 0.05);
 
     ctx.textAlign = 'center';
-    ctx.fillText(keyName(keyBindings.notes[i]),
+    ctx.fillText(binding === i ? '' : keyName(keyBindings.notes[i]),
       x + w * (i + 0.5) / frets,
       y + h * 0.94);
   }

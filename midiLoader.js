@@ -7,9 +7,10 @@ if(!(window.File && window.FileReader && window.FileList && window.Blob)) {
   fileDrop.addEventListener("drop", () => fileDrop.classList.remove("Hover"))
   document.querySelector("#FileDrop input").addEventListener("change", e => {
     //get the files
-    const files = e.target.files
+    const files = e.target.files;
     if(files.length > 0) {
-      const file = files[0]
+      const file = files[0];
+      g('load_song', file.name);
       parseMidi(file, file.name);
     }
   })
