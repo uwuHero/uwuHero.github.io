@@ -23,7 +23,7 @@ function drawChartSettings(x, y, w, h) {
             chartTrack = i;
             startSong();
             sb = 4;
-            g('play_song', songs[currentSong][1]);
+             g('event', 'play_song', songs[currentSong][1]);
           }, paper, paper);
 
         ctx.fillStyle = '#000';

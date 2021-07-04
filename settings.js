@@ -185,7 +185,6 @@ function playPiano() {
     let key = keys.shift();
     fret = keyBindings.notes.indexOf(key[0]);
     if(fret < 0 || fret >= frets || holdingKeys[fret] === key[1]) {
-      console.log(key);
       if(!pianoHotkeys.hasOwnProperty(key[0]) || !pianoHotkeys[key[0]]) {
         switch (key[0]) {
           case 38:
