@@ -20,6 +20,10 @@ function drawMenu(x, y, w, h) {
       document.body.requestFullscreen()
     }, fullscreen, fullscreenb);
   }
+
+  ctx.fillStyle = '#fff';
+  ctx.font = `${(h*0.05)>>0}px Open Sans`;
+  ctx.fillText(`v ${version}`, x + h * 0.025, y + h * 0.975);
 }
 
 function s0() {

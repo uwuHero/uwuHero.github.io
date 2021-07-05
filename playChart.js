@@ -285,7 +285,7 @@ let streakColors = ['#888', '#ff8844', '#88ff88', '#aaccff', '#ff88ff', '#fff'];
 let scoreColors = ['#f00', 'rgb(128,65,121)', 'rgb(146,76,139)', 'rgb(177,68,166)', 'rgb(163,75,184)', 'rgb(142,59,184)', 'rgb(129,48,190)', 'rgb(107,59,184)', 'rgb(65,108,218)', 'rgb(65,169,218)', 'rgb(65,218,155)', 'rgb(109,221,155)', 'rgb(109,221,112)', 'rgb(225,209,14)'];
 
 function drawScoreTopDown(x, y, w, h) {
-  //ctx.font = `${(h*0.5)>>0}px sans-serif`;
+  //ctx.font = `${(h*0.5)>>0}px Open Sans`;
   //ctx.fillStyle = '#fff';
   //ctx.fillText(`${notesHit}\n${streak}`, x, y + h / 2, w, h)
   if(FC) {
@@ -419,10 +419,17 @@ function drawPlayChart(x, y, w, h) {
 
   if(currentTime / 1000 > songs[currentSong][2].duration + 1) {
     sb = 5;
-    g('event', notesHit / totalNotes > 0.5 ? 'beat_song' : 'lost_song', {
-      song: songs[currentSong][1]
+    g('event', notesHit / totalNotes > 0.6 ? 'beat_song' : 'lost_song', {
+      song: songs[currentSong][1],
+      score: (notesHit / totalNotes * 1000 >> 0) / 10
     });
+    if(FC) {
+      g('event', 'Full_combo', {
+        song: songs[currentSong][1]
+      });
+    }
     addHighScore();
+    saveCookie();
   }
 
   drawScoreTopDown(x, y, w, h);

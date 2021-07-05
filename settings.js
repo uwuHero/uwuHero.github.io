@@ -249,7 +249,7 @@ function drawSettings(x, y, w, h) {
   ctx.drawImage(background, x, y, w, h);
 
   ctx.fillStyle = '#fff';
-  ctx.font = `${(w*0.04)>>0}px sans-serif`;
+  ctx.font = `${(w*0.04)>>0}px Open Sans`;
 
   ctx.fillText('Keys', x + w * 0.45, y + h * 0.78);
 
@@ -451,6 +451,7 @@ function drawSettings(x, y, w, h) {
         delete pianoSounds[sound];
       }
       sb = 0;
+      saveCookie();
     }, backImg, backImgb);
 
   highways[highway](x - w, y + h * 0.8, w * 3, h * 0.2);
@@ -464,7 +465,7 @@ function drawSettings(x, y, w, h) {
   for(let i = 1; i <= frets - 1; i++) {
     ctx.fillRect(x + i * w / frets, y + h * 0.8, 1, h * 0.2);
   }
-  ctx.font = `${(w*0.025)>>0}px sans-serif`;
+  ctx.font = `${(w*0.025)>>0}px Open Sans`;
   for(let i = 0; i < frets; i++) {
     button(
       x + i * w / frets - 1,

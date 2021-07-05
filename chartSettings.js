@@ -30,7 +30,7 @@ function drawChartSettings(x, y, w, h) {
 
         ctx.fillStyle = '#000';
         let txt = (i > 0 && cSong.tracks[i - 1].instrument.name == cSong.tracks[i].instrument.name ? (cSong.tracks[i].notes[0].midi < 60 ? 'bass ' : '') : '') + (cSong.tracks.length > 6 ? cSong.tracks[i].instrument.name : cSong.tracks[i].instrument.family);
-        ctx.font = `${(txt.length>25?txt.length>33?w*0.02:w*0.03:w*0.04)>>0}px sans-serif`;
+        ctx.font = `${(txt.length>25?txt.length>33?w*0.02:w*0.03:w*0.04)>>0}px Open Sans`;
         ctx.fillText(' ' + txt,
           (x + w * 0.11) >> 0,
           (y + w * 0.1 * ((i - mins) + (txt.length > 25 ? txt.length > 33 ? 1.5 : 1.55 : 1.6)) + instrumentScroll * w) >> 0);
@@ -81,7 +81,7 @@ function drawChartSettings(x, y, w, h) {
   ctx.drawImage(overlay, x, y, w, h);
 
 
-  ctx.font = `${(w*0.025)>>0}px sans-serif`;
+  ctx.font = `${(w*0.025)>>0}px Open Sans`;
   ctx.textAlign = 'center';
   ctx.fillStyle = '#fff';
   ctx.fillText(songs[currentSong][1], x + w * 0.8, y + h * 0.25);

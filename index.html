@@ -54,7 +54,7 @@
     }
 
     #FileDrop #Text {
-      font-family: sans-serif;
+      font-family: 'Open Sans', sans-serif;
       position: absolute;
       width: 100%;
       height: 20px;
@@ -76,7 +76,56 @@
       user-select: none;
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
     }
+
+    p,
+    button {
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    button {
+      background-color: white;
+      border: none;
+      color: black;
+      padding: 0.3em 1em;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background-color: skyblue;
+      cursor: pointer;
+    }
+
+    #msg-wrapper {
+      display: none;
+      /* Hidden by default */
+      position: fixed;
+      /* Stay in place */
+      z-index: 1;
+      /* Sit on top */
+      padding-top: 1em;
+      /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 100%;
+      /* Full width */
+      overflow: auto;
+    }
+
+    #msg-content {
+      text-align: center;
+      background-color: #fefe30;
+      margin: auto;
+      padding: 0.2em;
+      width: 80%;
+    }
   </style>
+
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&amp;display=swap" rel="stylesheet">
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-J6SLXL2863"></script>
   <script>
@@ -100,6 +149,12 @@
 </head>
 
 <body unselectable="on">
+  <div id="msg-wrapper">
+    <div id="msg-content">
+      <p id="message">We use cookies and other tracking technologies to save your game and to analyze our website traffic.&nbsp;&nbsp;&nbsp; <button onclick="cook(true)">I agree</button>&nbsp;&nbsp;<button onclick="cook(false)">I decline</button></p>
+    </div>
+  </div>
+
   <div id="FileDrop">
     <div id="Text">
       Drop a midi file here

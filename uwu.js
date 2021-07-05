@@ -1,8 +1,119 @@
 let dev = true;
-let version = "0.0.1";
+let version = "0.1.0";
 
 const colors = ["#242729", "grey", "#151515", "white", "blue"];
 
+//cookies
+function cook(v) {
+  acceptedTerms = v;
+  document.getElementById("msg-wrapper").style.display = 'none';
+  saveCookie();
+}
+
+
+function setCookie(cname, cvalue, exdays) {
+  let d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  let expires = "expires=" + d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for(let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while(c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if(c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+function saveCookie() {
+  if(!useCookies) {
+    return;
+  }
+  let cookie = {
+    version: version,
+    highScores: highScores,
+    keyBindings: keyBindings,
+
+    frets: frets,
+    maxNotes: maxNotes,
+    hyperSpeedV: hyperSpeedV,
+    volume: volume,
+
+    extendedSustains: extendedSustains,
+    lefty: lefty,
+    colorMode: colorMode,
+    colorPalette: colorPalette,
+    highway: highway,
+  };
+  //console.log(JSON.stringify(cookie));
+  setCookie("UwUHero", JSON.stringify(cookie), 365 * 200);
+}
+
+function loadCookie() {
+  let cookie = getCookie("UwUHero");
+  if(cookie) {
+    cook(true);
+    try {
+      cookie = JSON.parse(cookie);
+      for(let v of cookie) {
+        switch (v) {
+          case 'highScores':
+            highScores = cookie[v];
+            break;
+          case 'keyBindings':
+            keyBindings = cookie[v];
+            break;
+          case 'frets':
+            frets = cookie[v];
+            break;
+          case 'maxNotes':
+            maxNotes = cookie[v];
+            break;
+          case 'hyperSpeedV':
+            hyperSpeedV = cookie[v];
+            hyperSpeed = 7 / hyperSpeedV;
+            break;
+          case 'volume':
+            volume = cookie[v];
+            break;
+          case 'extendedSustains':
+            extendedSustains = cookie[v];
+            break;
+          case 'lefty':
+            lefty = cookie[v];
+            break;
+          case 'colorMode':
+            colorMode = cookie[v];
+            break;
+          case 'colorPalette':
+            colorPalette = cookie[v];
+            break;
+          case 'highway':
+            highway = cookie[v];
+            break;
+          default:
+            console.log(`${v} deprecated`);
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+}
+loadCookie();
+
+if(!acceptedTerms) {
+  document.getElementById("msg-wrapper").style.display = 'block';
+}
 
 //initialize canvas
 const c = document.getElementById("canvas");
@@ -129,7 +240,7 @@ function drawCanvas(t) {
     ctx.fillStyle = '#000'
     ctx.fillRect(0, 0, 100, 25);
     ctx.fillStyle = '#fff';
-    ctx.font = '20px sans-serif';
+    ctx.font = '20px Open Sans';
     ctx.textAlign = 'left';
     ctx.fillText((1000 / (ti - lt) >> 0) + " FPS", 5, 20);
     lt = ti;
