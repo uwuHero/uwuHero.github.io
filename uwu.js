@@ -64,7 +64,7 @@ function loadCookie() {
     cook(true);
     try {
       cookie = JSON.parse(cookie);
-      for(let v of cookie) {
+      for(let v in cookie) {
         switch (v) {
           case 'highScores':
             highScores = cookie[v];
