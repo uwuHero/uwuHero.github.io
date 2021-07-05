@@ -35,7 +35,7 @@ function getCookie(cname) {
 }
 
 function saveCookie() {
-  if(!useCookies) {
+  if(!acceptedTerms) {
     return;
   }
   let cookie = {
