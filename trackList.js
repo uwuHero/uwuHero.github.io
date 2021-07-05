@@ -98,7 +98,7 @@ function drawTrackList(x, y, w, h) {
       }, paper, paper);
 
     ctx.fillStyle = '#000';
-    ctx.font = `${(songs[i][1].length > 16 ? songs[i][1].length > 24 ? w * 0.02 : w * 0.03 : w * 0.04) >> 0}px sans-serif`;
+    ctx.font = `${(songs[i][1].length > 16 ? songs[i][1].length > 24 ? w * 0.02 : w * 0.03 : w * 0.04) >> 0}px Open Sans`;
     ctx.fillText(' ' + songs[i][1],
       (x + w * 0.11) >> 0,
       (y + w * 0.1 * (i + (songs[i][1].length > 16 ? songs[i][1].length > 24 ? 1.5 : 1.55 : 1.6)) + trackScrollAt * w) >> 0);
