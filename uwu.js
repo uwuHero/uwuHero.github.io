@@ -1,5 +1,5 @@
 let dev = true;
-let version = "0.1.0";
+let version = "0.1.1";
 
 const colors = ["#242729", "grey", "#151515", "white", "blue"];
 
@@ -7,7 +7,6 @@ const colors = ["#242729", "grey", "#151515", "white", "blue"];
 function cook(v) {
   acceptedTerms = v;
   document.getElementById("msg-wrapper").style.display = 'none';
-  saveCookie();
 }
 
 
