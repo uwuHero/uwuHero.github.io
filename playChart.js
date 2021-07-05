@@ -419,7 +419,9 @@ function drawPlayChart(x, y, w, h) {
 
   if(currentTime / 1000 > songs[currentSong][2].duration + 1) {
     sb = 5;
-    g('event', notesHit / totalNotes > 0.5 ? 'beat_song' : 'lost_song', songs[currentSong][1]);
+    g('event', notesHit / totalNotes > 0.5 ? 'beat_song' : 'lost_song', {
+      song: songs[currentSong][1]
+    });
     addHighScore();
   }
 

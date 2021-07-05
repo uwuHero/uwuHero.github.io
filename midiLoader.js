@@ -10,7 +10,9 @@ if(!(window.File && window.FileReader && window.FileList && window.Blob)) {
     const files = e.target.files;
     if(files.length > 0) {
       const file = files[0];
-      g('event', 'load_song', file.name);
+      g('event', 'load_song', {
+        file: file.name
+      });
       parseMidi(file, file.name);
     }
   })
