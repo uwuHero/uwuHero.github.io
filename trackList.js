@@ -19,29 +19,29 @@ function positionMidiInput(x, y, w, h) {
   fd.style.top = `${y + h * 0.25}px`;
 }
 
-function drawStars(song, bestV, x, y, w, h) {
+function drawStars(song, bestV, x, y, w, h, scroll) {
   if(bestV[1]) {
     ctx.drawImage(listFullCombo,
-      (x + w * 0.1) >> 0,
-      (y + w * 0.1 * (song + 1) + trackScrollAt * w) >> 0,
-      w * 0.5,
-      w * 0.08)
+      (x + w * 0.1 + w * 0.1) >> 0,
+      (y + w * 0.008 + w * 0.1 * (song + 1) + scroll * w) >> 0,
+      w * 0.4,
+      w * 0.064)
     return;
   }
 
   for(let i = 2; i <= bestV[0]; i += 2) {
     ctx.drawImage(star,
-      (x + w * (0.585 - i * 0.018)) >> 0,
-      (y + w * 0.1 * (song + 1) + w * 0.02 + trackScrollAt * w) >> 0,
-      w * 0.04,
-      w * 0.04);
+      (x + w * (0.585 - i * 0.0135)) >> 0,
+      (y + w * 0.1 * (song + 1) + w * 0.025 + scroll * w) >> 0,
+      w * 0.03,
+      w * 0.03);
   }
   if(bestV[0] % 2 && bestV[0] < 13) {
     ctx.drawImage(halfStar,
-      (x + w * (0.565 - bestV[0] * 0.018)) >> 0,
-      (y + w * 0.1 * (song + 1) + w * 0.02 + trackScrollAt * w) >> 0,
-      w * 0.04,
-      w * 0.04);
+      (x + w * (0.565 - (bestV[0] - 0.5) * 0.0135)) >> 0,
+      (y + w * 0.1 * (song + 1) + w * 0.025 + scroll * w) >> 0,
+      w * 0.03,
+      w * 0.03);
   }
 }
 
@@ -101,7 +101,7 @@ function drawTrackList(x, y, w, h) {
     ctx.font = `${(songs[i][1].length > 16 ? songs[i][1].length > 24 ? w * 0.02 : w * 0.03 : w * 0.04) >> 0}px Open Sans`;
     ctx.fillText(' ' + songs[i][1],
       (x + w * 0.11) >> 0,
-      (y + w * 0.1 * (i + (songs[i][1].length > 16 ? songs[i][1].length > 24 ? 1.5 : 1.55 : 1.6)) + trackScrollAt * w) >> 0);
+      (y + w * 0.1 * (i + 0.96 * (songs[i][1].length > 16 ? songs[i][1].length > 24 ? 1.5 : 1.55 : 1.6)) + trackScrollAt * w) >> 0);
 
     if(songs[i].hasOwnProperty('hashes')) {
       let best = -1;
@@ -117,7 +117,7 @@ function drawTrackList(x, y, w, h) {
           bestV = highScores[songs[i].hashes[hash]][`${frets},${maxNotes}`];
         }
       }
-      drawStars(i, bestV, x, y, w, h);
+      drawStars(i, bestV, x, y, w, h, trackScrollAt);
     }
   }
 

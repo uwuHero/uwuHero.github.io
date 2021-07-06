@@ -33,7 +33,7 @@ function drawChartSettings(x, y, w, h) {
         ctx.font = `${(txt.length>25?txt.length>33?w*0.02:w*0.03:w*0.04)>>0}px Open Sans`;
         ctx.fillText(' ' + txt,
           (x + w * 0.11) >> 0,
-          (y + w * 0.1 * ((i - mins) + (txt.length > 25 ? txt.length > 33 ? 1.5 : 1.55 : 1.6)) + instrumentScroll * w) >> 0);
+          (y + w * 0.1 * ((i - mins) + 0.96 * (txt.length > 25 ? txt.length > 33 ? 1.5 : 1.55 : 1.6)) + instrumentScroll * w) >> 0);
 
         if(!songs[currentSong].hasOwnProperty('hashes')) {
           songs[currentSong].hashes = {};
@@ -49,7 +49,7 @@ function drawChartSettings(x, y, w, h) {
           if(!highScores[songs[currentSong].hashes[i]].hasOwnProperty(`${frets},${maxNotes}`)) {
             continue;
           }
-          drawStars(i - mins, highScores[songs[currentSong].hashes[i]][`${frets},${maxNotes}`], x, y, w, h);
+          drawStars(i - mins, highScores[songs[currentSong].hashes[i]][`${frets},${maxNotes}`], x, y, w, h, instrumentScroll);
         }
       }
     }

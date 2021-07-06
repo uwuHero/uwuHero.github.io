@@ -214,7 +214,7 @@ let ti = lt;
 
 function drawCanvas(t) {
   ctx.imageSmoothingQuality = "high";
-  document.body.style.cursor = 'default';
+  document.body.style.cursor = scene == 4 ? 'none' : 'default';
   ctx.fillStyle = colors[0];
   ctx.fillRect(0, 0, w, h);
 
