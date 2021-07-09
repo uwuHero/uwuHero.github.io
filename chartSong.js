@@ -301,7 +301,7 @@ function chartSong(currentMidi, track) {
       unChartedNotes[i][6] = 0;
     }
     //chart.chart.push([unChartedNotes[i][0], chartedNotes[i], duration]);
-    chart.chart.push([unChartedNotes[i][3], lefty ? frets - 1 - chartedNotes[i] : chartedNotes[i], unChartedNotes[i][6]]);
+    chart.chart.push([unChartedNotes[i][3], chartedNotes[i], unChartedNotes[i][6]]);
   }
   return chart;
 }

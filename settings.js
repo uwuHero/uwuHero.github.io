@@ -456,7 +456,7 @@ function drawSettings(x, y, w, h) {
 
   highways[highway](x - w, y + h * 0.8, w * 3, h * 0.2);
   for(let i = 0; i < frets; i++) {
-    if(holdingKeys[i]) {
+    if(holdingKeys[lefty ? frets - 1 - i : i]) {
       ctx.fillStyle = fretPalette[colorPalette][fretColors[colorMode][frets - 1][i]];
       ctx.fillRect(x + i * w / frets, y + h * 0.9, w / frets, h * 0.1);
     }
@@ -473,8 +473,8 @@ function drawSettings(x, y, w, h) {
       w / frets + 2,
       h * 0.1,
       a => {
-        binding = i;
-        keyBindings.notes[i] = -1;
+        binding = lefty ? frets - 1 - i : i;
+        keyBindings.notes[lefty ? frets - 1 - i : i] = -1;
       }, minus, minus);
 
     ctx.fillStyle = fretPalette[colorPalette][fretColors[colorMode][frets - 1][i]];
@@ -486,7 +486,7 @@ function drawSettings(x, y, w, h) {
       h * 0.05);
 
     ctx.textAlign = 'center';
-    ctx.fillText(binding === i ? '' : keyName(keyBindings.notes[i]),
+    ctx.fillText(binding === (lefty ? frets - 1 - i : i) ? '' : keyName(keyBindings.notes[lefty ? frets - 1 - i : i]),
       x + w * (i + 0.5) / frets,
       y + h * 0.94);
   }

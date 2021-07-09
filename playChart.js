@@ -186,9 +186,9 @@ function drawNoteTopDown(note, x, y, w, h, grey = 0) {
   if(grey === 0 && (yp < -w / 18 / frets || yp > h + w / 18 / frets)) {
     return;
   }
-  ctx.fillStyle = grey ? '#888' : fretPalette[colorPalette][fretColors[colorMode][frets - 1][note[1]]];
+  ctx.fillStyle = grey ? '#888' : fretPalette[colorPalette][fretColors[colorMode][frets - 1][(lefty ? frets - 1 - note[1] : note[1])]];
   ctx.fillRect(
-    x + w / 3 + (note[1] + 0.5) * w / 3 / frets - w / 6 / frets,
+    x + w / 3 + ((lefty ? frets - 1 - note[1] : note[1]) + 0.5) * w / 3 / frets - w / 6 / frets,
     y + yp - w / 200,
     w / 3 / frets,
     w / 100);
@@ -196,7 +196,7 @@ function drawNoteTopDown(note, x, y, w, h, grey = 0) {
   let dur = note[2] / hyperSpeed * h;
 
   ctx.fillRect(
-    x + w / 3 + (note[1] + 0.5) * w / 3 / frets - w / 18 / frets,
+    x + w / 3 + ((lefty ? frets - 1 - note[1] : note[1]) + 0.5) * w / 3 / frets - w / 18 / frets,
     y + yp - dur,
     w / 9 / frets,
     dur);
@@ -401,7 +401,7 @@ function drawPlayChart(x, y, w, h) {
   ctx.fillRect(x + w / 3, y + h * 0.9 - 1, w / 3, 2);
 
   for(let i = 0; i < frets; i++) {
-    if(holdingKeys[i]) {
+    if(holdingKeys[lefty ? frets - 1 - i : i]) {
       ctx.fillStyle = fretPalette[colorPalette][fretColors[colorMode][frets - 1][i]];
       ctx.fillRect(
         x + w / 3 + (i + 0.5) * w / 3 / frets - w / 6 / frets,
