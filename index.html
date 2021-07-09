@@ -106,12 +106,10 @@
       position: fixed;
       /* Stay in place */
       z-index: 1;
-      /* Sit on top */
-      padding-top: 1em;
       /* Location of the box */
-      left: 0;
-      top: 0;
-      width: 100%;
+      left: 10vw;
+      top: 1em;
+      width: 80vw;
       /* Full width */
       overflow: auto;
     }
@@ -121,7 +119,33 @@
       background-color: #fefe30;
       margin: auto;
       padding: 0.2em;
-      width: 80%;
+    }
+
+    #discord {
+      position: fixed;
+      margin: min(1vw, calc(1vh * 16 / 9));
+    }
+
+    @media (min-aspect-ratio: 16/9) {
+      #discord {
+        right: calc(50vw - 50vh * 16 / 9);
+        top: 0;
+      }
+
+      #discord a img {
+        width: calc(10vh * 16 / 9);
+      }
+    }
+
+    @media (max-aspect-ratio: 16 / 9) {
+      #discord {
+        right: 0;
+        top: calc(50vh - 50vw * 9 / 16);
+      }
+
+      #discord a img {
+        width: calc(10vw);
+      }
     }
   </style>
 
@@ -162,6 +186,9 @@
     <input type="file" accept="audio/midi">
   </div>
   <canvas id="canvas"></canvas>
+  <div id='discord'>
+    <a target="_blank" rel="noopener noreferrer" href='https://discord.gg/UrwKBwQXZj'><img src='assets/Discord-Logo-Color.svg' alt='Discord' /></a>
+  </div>
   <script src="assetsList.js" type="text/javascript"></script>
   <script src="https://cdn.jsdelivr.net/npm/howler@2.2.0/dist/howler.min.js"></script>
   <script type="text/javascript" src="https://unpkg.com/@tonejs/midi"></script>
