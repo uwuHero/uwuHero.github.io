@@ -13,7 +13,7 @@ if(!(window.File && window.FileReader && window.FileList && window.Blob)) {
       g('event', 'load_song', {
         file: file.name
       });
-      parseMidi(file, file.name);
+      parseMidi(file, file.name.replace(/\..+/,'').replace(/_/g,' '));
     }
   })
 }
