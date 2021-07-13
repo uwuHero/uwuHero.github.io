@@ -1,5 +1,5 @@
 let dev = true;
-let version = "0.1.3";
+let version = "0.1.4";
 
 const colors = ["#242729", "grey", "#151515", "white", "blue"];
 
@@ -181,6 +181,21 @@ function button(x, y, w, h, callback, img, imgb) {
 }
 
 /**
+ * Blends 2 colors
+ * @param  {hex} color1          1st color
+ * @param  {hex} color2          2nd color
+ * @param  {Number} [factor=0.5] mixing factor
+ * @return {hex}                 blend of the 2 colors
+ */
+function blendColors(color1, color2, factor = 0.5) {
+  let r = parseInt(color1.slice(1, 3), 16) * factor + parseInt(color2.slice(1, 3), 16) * (1 - factor) >> 0;
+  let g = parseInt(color1.slice(3, 5), 16) * factor + parseInt(color2.slice(3, 5), 16) * (1 - factor) >> 0;
+  let b = parseInt(color1.slice(5, 7), 16) * factor + parseInt(color2.slice(5, 7), 16) * (1 - factor) >> 0;
+
+  return `#${r.toString(16).padStart(2,0)}${g.toString(16).padStart(2,0)}${b.toString(16).padStart(2,0)}`;
+}
+
+/**
  * callWithinAR - Calls the callback function with parameters for a rect of the specified aspect ratio within the rect provided
  *
  * @param  {number} x        x
@@ -204,6 +219,11 @@ function imgaeWithinAR(img, ar, x, y, w, h) {
   callWithinAR(x, y, w, h, ar, (x, y, w, h) => ctx.drawImage(img, x, y, w, h));
 }
 
+function toggleElement(name) {
+  let element = document.getElementById(name);
+  element.style.display = element.style.display === 'none' ? 'block' : 'none';
+}
+
 let scene = 0,
   sb = 0;
 
@@ -223,6 +243,13 @@ function drawCanvas(t) {
     scroll = 0;
   }
   scenes[scene]();
+
+  if(sb !== scene && (scene === 0 || scene === 1) && sb !== 0 && sb !== 1) {
+    toggleElement('discord');
+  } else if(sb !== scene && (sb === 0 || sb === 1) && scene !== 0 && scene !== 1) {
+    toggleElement('discord');
+  }
+
   if(sb !== scene) {
     scene = sb;
     scroll = 0;
@@ -230,11 +257,12 @@ function drawCanvas(t) {
   if(scene !== 4 && scene !== 1) {
     keys = [];
   }
-  if(scene != 2 && midiDisplay) {
+
+  if(scene !== 2 && midiDisplay) {
     toggleMidiInput();
   }
 
-  if(dev) {
+  if(FPSCounter) {
     ti = Date.now();
     ctx.fillStyle = '#000'
     ctx.fillRect(0, 0, 100, 25);

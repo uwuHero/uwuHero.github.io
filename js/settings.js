@@ -265,6 +265,12 @@ function drawSettings(x, y, w, h) {
       w * 0.04, w * 0.04,
       a => {
         frets = Math.max(2, frets - 1);
+
+        holdingKeys[frets] = false;
+        if(pianoSounds.hasOwnProperty(frets)) {
+          pianoSounds[frets].cancel();
+          delete pianoSounds[frets];
+        }
       }, minus, minus);
   }
   if(frets < fretColors[colorMode].length) {
@@ -449,6 +455,9 @@ function drawSettings(x, y, w, h) {
       for(let sound in pianoSounds) {
         pianoSounds[sound].cancel();
         delete pianoSounds[sound];
+      }
+      for(let i in holdingKeys) {
+        holdingKeys[i] = false;
       }
       sb = 0;
       saveCookie();

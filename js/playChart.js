@@ -13,7 +13,7 @@ let fretPalette = [
   ['#00ff00', '#ff0000', '#ffff00', '#0088ff', '#ff8800', '#ff00ff', '#00ffff'],
   ['#ff0000', '#ff8800', '#ffff00', '#00ff00', '#00ffff', '#0088ff', '#ff00ff'],
   ['#117733', '#44AA99', '#88CCEE', '#DDCC77', '#CC6677', '#AA4499', '#882255'],
-  ['rgb(230,159,0)', 'rgb(86,180,233)', 'rgb(0,158,115)', 'rgb(240,228,66)', 'rgb(0,114,178)', 'rgb(213,94,0)', 'rgb(204,121,167)']
+  ['#e69f00', '#56b3e9', '#009e73', '#f0e442', '#0071b2', '#d55c00', '#cc79a7']
 ];
 
 let fretColors = [
@@ -61,11 +61,9 @@ let sustains = [];
 
 function fretHighway(x, y, w, h) {
   for(let i = 0; i < frets; i++) {
-    ctx.fillStyle = fretPalette[colorPalette][fretColors[colorMode][frets - 1][i]];
+    ctx.fillStyle = blendColors(fretPalette[colorPalette][fretColors[colorMode][frets - 1][i]], '#000000', 0.2);
     ctx.fillRect(x + w / 3 + i * w / frets / 3, y, w / frets / 3, h);
   }
-  ctx.fillStyle = '#000c';
-  ctx.fillRect(x, y, w, h);
 }
 
 let highways = [a => 0, fretHighway];
@@ -228,6 +226,7 @@ function hitNotes() {
   while(keys.length) {
     let key = keys.shift();
     if(keyBindings.back.indexOf(key[0]) >= 0) {
+      releaseKeys();
       sb = 6;
     }
     fret = keyBindings.notes.indexOf(key[0]);
@@ -258,6 +257,16 @@ function hitNotes() {
 
       streak = 0;
       FC = false;
+    }
+  }
+}
+
+function releaseKeys() {
+  for(let fret in holdingKeys) {
+    holdingKeys[fret] = false;
+    if(pianoSounds.hasOwnProperty(fret)) {
+      pianoSounds[fret].cancel();
+      delete pianoSounds[fret];
     }
   }
 }
@@ -418,6 +427,7 @@ function drawPlayChart(x, y, w, h) {
   lastTone = currentTime - hitWindow * 1000;
 
   if(currentTime / 1000 > songs[currentSong][2].duration + 1) {
+    releaseKeys();
     sb = 5;
     g('event', notesHit / totalNotes > 0.6 ? 'beat_song' : 'lost_song', {
       song: songs[currentSong][1],
