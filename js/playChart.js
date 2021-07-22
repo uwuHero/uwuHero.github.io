@@ -236,8 +236,12 @@ function hitNotes() {
     holdingKeys[fret] = key[1];
     if(!key[1]) {
       if(pianoSounds.hasOwnProperty(fret)) {
-        pianoSounds[fret].cancel();
-        delete pianoSounds[fret];
+        try {
+          pianoSounds[fret].cancel();
+          delete pianoSounds[fret];
+        } catch (e) {
+          console.error(`Race condition canceling note.\n${e}`);
+        }
       }
       return;
     }
