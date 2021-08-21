@@ -3,6 +3,14 @@ let audioContext = new AudioContextFunc();
 let player = new WebAudioFontPlayer();
 player.loader.decodeAfterLoading(audioContext, '_tone_0010_GeneralUserGS_sf2_file');
 player.loader.decodeAfterLoading(audioContext, '_tone_0270_Aspirin_sf2_file');
+player.loader.decodeAfterLoading(audioContext, '_tone_0800_Aspirin_sf2_file');
+player.loader.decodeAfterLoading(audioContext, '_tone_0280_Aspirin_sf2_file');
+player.loader.decodeAfterLoading(audioContext, '_tone_0481_GeneralUserGS_sf2_file');
+player.loader.decodeAfterLoading(audioContext, '_tone_0200_SBLive_sf2');
+player.loader.decodeAfterLoading(audioContext, '_tone_0180_Chaos_sf2_file');
+player.loader.decodeAfterLoading(audioContext, '_tone_0640_Aspirin_sf2_file');
+player.loader.decodeAfterLoading(audioContext, '_tone_0570_Aspirin_sf2_file');
+player.loader.decodeAfterLoading(audioContext, '_tone_0560_Aspirin_sf2_file');
 
 function soundfontVariable(family, name) {
   switch (family) {
@@ -31,6 +39,22 @@ function soundfontVariable(family, name) {
           return _tone_0180_Chaos_sf2_file;
       }
       break;
+    case "reed":
+      switch (name) {
+        case "soprano sax":
+          return _tone_0640_Aspirin_sf2_file;
+        default://soprano sax
+          return _tone_0640_Aspirin_sf2_file;
+      }
+      break;
+    case "brass":
+      switch (name) {
+        case "trombone":
+          return _tone_0570_Aspirin_sf2_file;
+        default://trumpet
+          return _tone_0560_Aspirin_sf2_file;
+      }
+      break;
     default:
       return _tone_0010_GeneralUserGS_sf2_file;
   }
@@ -52,8 +76,13 @@ function playSound(pitch, duration, vol, family, name) {
       drumSound.volume(vol * 2);
       drumSound.play(pitch - 26 + '');
       break;
-    default:
-      player.queueWaveTable(audioContext, audioContext.destination, soundfontVariable(family, name), 0, pitch, duration < 0.18 ? 0.18 : duration, vol);
+    case "piano":
+      switch (name) {
+        case "acoustic grand piano":
+          vol /= 2;
+      }
+      default:
+        player.queueWaveTable(audioContext, audioContext.destination, soundfontVariable(family, name), 0, pitch, duration < 0.18 ? 0.18 : duration, vol);
   }
 }
 
