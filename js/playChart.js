@@ -187,9 +187,9 @@ function drawNoteTopDown(note, x, y, w, h, grey = 0) {
   ctx.fillStyle = grey ? '#888' : fretPalette[colorPalette][fretColors[colorMode][frets - 1][(lefty ? frets - 1 - note[1] : note[1])]];
   ctx.fillRect(
     x + w / 3 + ((lefty ? frets - 1 - note[1] : note[1]) + 0.5) * w / 3 / frets - w / 6 / frets,
-    y + yp - w / 200,
+    y + yp - w * noteHeight / 2,
     w / 3 / frets,
-    w / 100);
+    w * noteHeight);
 
   let dur = note[2] / hyperSpeed * h;
 

@@ -13,6 +13,9 @@ let extendedSustains = true;
 let noteTolerance = 0.15;
 let startingWait = 2;
 
+let noteHeight = 0.012;
+let noteHeightValue = 12;
+
 let keyBindings = {
   select: [13],
   up: [38],
@@ -445,6 +448,32 @@ function drawSettings(x, y, w, h) {
       w * 0.04, w * 0.04,
       a => {
         volume = Math.min(20, volume + 1);
+      }, plus, plus);
+  }
+
+  ctx.fillText('Note Height', x + w * 0.05, y + h * 0.63);
+  ctx.textAlign = 'center';
+  ctx.fillText(noteHeightValue, x + w * 0.45, y + h * 0.63);
+  ctx.textAlign = 'left';
+
+  if(noteHeightValue > 0) {
+    button(
+      x + w * 0.38,
+      y + h * 0.55 + w * 0.01,
+      w * 0.04, w * 0.04,
+      a => {
+        noteHeightValue = Math.max(0, noteHeightValue - 1);
+        noteHeight = noteHeightValue * 0.001;
+      }, minus, minus);
+  }
+  if(noteHeightValue < 20) {
+    button(
+      x + w * 0.48,
+      y + h * 0.55 + w * 0.01,
+      w * 0.04, w * 0.04,
+      a => {
+        noteHeightValue = Math.min(20, noteHeightValue + 1);
+        noteHeight = noteHeightValue * 0.001;
       }, plus, plus);
   }
   button(
