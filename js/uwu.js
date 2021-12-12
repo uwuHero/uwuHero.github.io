@@ -1,5 +1,5 @@
 let dev = true;
-let version = "0.1.7";
+let version = "0.1.7.1";
 
 const colors = ["#242729", "grey", "#151515", "white", "blue"];
 
@@ -46,6 +46,7 @@ function saveCookie() {
     maxNotes: maxNotes,
     hyperSpeedV: hyperSpeedV,
     volume: volume,
+    noteHeightValue: noteHeightValue,
 
     extendedSustains: extendedSustains,
     lefty: lefty,
@@ -83,6 +84,10 @@ function loadCookie() {
             break;
           case 'volume':
             volume = cookie[v];
+            break;
+          case 'noteHeightValue':
+            noteHeightValue = cookie[v];
+            noteHeight = noteHeightValue * 0.001;
             break;
           case 'extendedSustains':
             extendedSustains = cookie[v];
