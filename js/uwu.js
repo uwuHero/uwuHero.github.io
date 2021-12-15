@@ -1,5 +1,5 @@
 let dev = true;
-let version = "0.1.8";
+let version = "0.1.9";
 
 const colors = ["#242729", "grey", "#151515", "white", "blue"];
 
@@ -53,6 +53,8 @@ function saveCookie() {
     colorMode: colorMode,
     colorPalette: colorPalette,
     highway: highway,
+    songSpeed: songSpeed,
+    highwayType: highwayType
   };
   //console.log(JSON.stringify(cookie));
   setCookie("UwUHero", JSON.stringify(cookie), 365 * 200);
@@ -103,6 +105,12 @@ function loadCookie() {
             break;
           case 'highway':
             highway = cookie[v];
+            break;
+          case 'songSpeed':
+            songSpeed = cookie[v];
+            break;
+          case 'highwayType':
+            highwayType = cookie[v];
             break;
           default:
             console.log(`${v} deprecated`);
@@ -415,7 +423,7 @@ document.onkeyup = (event) => {
 
 document.body.onblur = (event) => {
   if(scene === 4) {
-    sb = 6;
+    //sb = 6;
   }
 }
 

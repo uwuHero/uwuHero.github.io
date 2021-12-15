@@ -137,6 +137,10 @@ let lefty = false;
 
 let highway = 0;
 
+let songSpeed = 1;
+
+let highwayType = 2;
+
 let highScores = {};
 
 function addHighScore() {
@@ -254,7 +258,7 @@ function drawSettings(x, y, w, h) {
   ctx.fillStyle = '#fff';
   ctx.font = `${(w*0.04)>>0}px Open Sans`;
 
-  ctx.fillText('Keys', x + w * 0.45, y + h * 0.78);
+  ctx.fillText('Keys', x + w * 0.45, y + h * 0.83);
 
   ctx.fillText('Lanes', x + w * 0.05, y + h * 0.23);
   ctx.textAlign = 'center';
@@ -377,6 +381,39 @@ function drawSettings(x, y, w, h) {
   }
 
 
+  ctx.fillText('Song Speed', x + w * 0.55, y + h * 0.73);
+  ctx.textAlign = 'center';
+  ctx.fillText(`${Math.round(songSpeed * 100)}%`, x + w * 0.88, y + h * 0.73);
+  ctx.textAlign = 'left';
+
+  if(songSpeed > 0.05) {
+    button(
+      x + w * 0.775,
+      y + h * 0.65 + w * 0.01,
+      w * 0.04, w * 0.04,
+      a => {
+        if(holdingKeys.indexOf(true) >= 0) {
+          songSpeed = Math.max(0.05, Math.round(songSpeed * 20 / 2) / 20);
+        } else {
+          songSpeed = Math.round(songSpeed * 20 - 1) / 20;
+        }
+      }, minus, minus);
+  }
+  if(songSpeed < 16) {
+    button(
+      x + w * 0.95,
+      y + h * 0.65 + w * 0.01,
+      w * 0.04, w * 0.04,
+      a => {
+        if(holdingKeys.indexOf(true) >= 0) {
+          songSpeed = Math.min(16, Math.round(songSpeed * 20 * 2) / 20);
+        } else {
+          songSpeed = Math.round(songSpeed * 20 + 1) / 20;
+        }
+      }, plus, plus);
+  }
+
+
   ctx.fillText('Max Chord Size', x + w * 0.05, y + h * 0.33);
   ctx.textAlign = 'center';
   ctx.fillText(maxNotes, x + w * 0.45, y + h * 0.33);
@@ -476,6 +513,27 @@ function drawSettings(x, y, w, h) {
         noteHeight = noteHeightValue * 0.001;
       }, plus, plus);
   }
+
+  ctx.fillText('Mode', x + w * 0.05, y + h * 0.73);
+  ctx.textAlign = 'center';
+  ctx.fillText(['Scroll Down', 'Scroll Up', '3D'][highwayType], x + w * 0.35, y + h * 0.73);
+  ctx.textAlign = 'left';
+
+  button(
+    x + w * 0.18,
+    y + h * 0.65 + w * 0.01,
+    w * 0.04, w * 0.04,
+    a => {
+      highwayType = (highwayType + 1) % 3;
+    }, minus, minus);
+  button(
+    x + w * 0.48,
+    y + h * 0.65 + w * 0.01,
+    w * 0.04, w * 0.04,
+    a => {
+      highwayType = (highwayType + 2) % 3;
+    }, plus, plus);
+
   button(
     x + h * 0.05,
     y + h * 0.05,
@@ -492,22 +550,18 @@ function drawSettings(x, y, w, h) {
       saveCookie();
     }, backImg, backImgb);
 
-  highways[highway](x - w, y + h * 0.8, w * 3, h * 0.2);
+  highways[highway](x - w, y + h * 0.85, w * 3, h * 0.15);
   for(let i = 0; i < frets; i++) {
     if(holdingKeys[lefty ? frets - 1 - i : i]) {
       ctx.fillStyle = fretPalette[colorPalette][fretColors[colorMode][frets - 1][i]];
-      ctx.fillRect(x + i * w / frets, y + h * 0.9, w / frets, h * 0.1);
+      ctx.fillRect(x + i * w / frets, y + h * 0.925, w / frets, h * 0.1);
     }
-  }
-  ctx.fillStyle = '#fff';
-  for(let i = 1; i <= frets - 1; i++) {
-    ctx.fillRect(x + i * w / frets, y + h * 0.8, 1, h * 0.2);
   }
   ctx.font = `${(w*0.025)>>0}px Open Sans`;
   for(let i = 0; i < frets; i++) {
     button(
       x + i * w / frets - 1,
-      y + h * 0.85,
+      y + h * 0.875,
       w / frets + 2,
       h * 0.1,
       a => {
@@ -519,14 +573,18 @@ function drawSettings(x, y, w, h) {
 
     ctx.fillRect(
       x + i * w / frets - 1,
-      y + h * 0.85,
+      y + h * 0.875,
       w / frets + 2,
       h * 0.05);
 
     ctx.textAlign = 'center';
     ctx.fillText(binding === (lefty ? frets - 1 - i : i) ? '' : keyName(keyBindings.notes[lefty ? frets - 1 - i : i]),
       x + w * (i + 0.5) / frets,
-      y + h * 0.94);
+      y + h * 0.965);
+  }
+  ctx.fillStyle = '#fff';
+  for(let i = 1; i <= frets - 1; i++) {
+    ctx.fillRect(x + i * w / frets, y + h * 0.85, 1, h * 0.15);
   }
 }
 
