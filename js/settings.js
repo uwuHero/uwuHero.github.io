@@ -554,7 +554,7 @@ function drawSettings(x, y, w, h) {
   for(let i = 0; i < frets; i++) {
     if(holdingKeys[lefty ? frets - 1 - i : i]) {
       ctx.fillStyle = fretPalette[colorPalette][fretColors[colorMode][frets - 1][i]];
-      ctx.fillRect(x + i * w / frets, y + h * 0.925, w / frets, h * 0.1);
+      ctx.fillRect(x + i * w / frets, y + h * 0.85, w / frets, h * 0.15);
     }
   }
   ctx.font = `${(w*0.025)>>0}px Open Sans`;
