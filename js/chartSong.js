@@ -266,15 +266,19 @@ function chartSong(currentMidi, track) {
         if(realChange < crntChange) {
           let extra = 0;
           for(let j = 0; j < frets + extra; j++) {
-            if(chartedNotes[lastMax - j] === 0) {
+            if(lastMax - j < 0 || chartedNotes[lastMax - j] === 0) {
               bottomOut = true;
             }
-            if(chartedNotes[min + j] === frets - 1) {
+            if(min + j >= chartedNotes.length || chartedNotes[min + j] === frets - 1) {
               topOut = true;
             }
 
-            if(chartedNotes[lastMax - j - 1] === chartedNotes[lastMax - j] ||
-              chartedNotes[lastMax + j + 1] === chartedNotes[lastMax + j]) {
+            if(
+              (lastMax - j - 1 >= 0 || lastMax + j + 1 < chartedNotes.length) &&
+              (
+                chartedNotes[lastMax - j - 1] === chartedNotes[lastMax - j] ||
+                chartedNotes[lastMax + j + 1] === chartedNotes[lastMax + j]
+              )) {
               extra++;
             }
 

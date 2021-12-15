@@ -505,7 +505,7 @@ function drawNotePerspective(note, x, y, w, h, grey = 0) {
     return;
   }
 
-  let dur = note[2] / hyperSpeed * h;
+  let dur = note[2] / hyperSpeed * h / songSpeed;
 
   yp = Math.max(0, ypv - dur);
 
@@ -674,7 +674,7 @@ function drawPlayChart(x, y, w, h) {
     } else if(sustains[i][0]) {
       sustains[i][1] = currentTime / 1000 * songSpeed;
     }
-    if(sustains[i][3] - sustains[i][1] < 0 || sustains[i][3] + hyperSpeed / 10 < currentTime / 1000) {
+    if(sustains[i][3] - sustains[i][1] < 0 || sustains[i][3] + hyperSpeed / 10 < currentTime / 1000 * songSpeed) {
       sustains.splice(i, 1);
       i--;
       continue;
@@ -697,7 +697,7 @@ function drawPlayChart(x, y, w, h) {
 
   lastTone = currentTime - hitWindow * 1000;
 
-  if(currentTime / 1000 > songs[currentSong][2].duration + 1) {
+  if(currentTime / 1000 > songs[currentSong][2].duration / songSpeed + 1) {
     releaseKeys();
     sb = 5;
     g('event', notesHit / totalNotes > 0.6 ? 'beat_song' : 'lost_song', {
