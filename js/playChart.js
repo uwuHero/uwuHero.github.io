@@ -494,44 +494,79 @@ function drawNotePerspective(note, x, y, w, h, grey = 0) {
 
   let xp = w / 3 + ((lefty ? frets - 1 - note[1] : note[1]) + 0.5) * w / 3 / frets - w / 6 / frets;
 
-  let n1 = perspectiveMap(x, y, w, h, xp, yp);
+  if(note[2] !== 0) {
+    let n1 = perspectiveMap(x, y, w, h, xp, yp);
 
-  if(note[2] === 0) {
-    ctx.fillRect(
-      n1.x,
-      n1.y,
-      n1.w,
-      n1.h);
-    return;
+    let dur = note[2] / hyperSpeed * h / songSpeed;
+
+    let yp2 = Math.max(0, ypv - dur);
+
+    let n2 = perspectiveMap(x, y, w, h, xp, yp2);
+
+    ctx.beginPath();
+    ctx.moveTo(
+      n1.x + n1.w / 3,
+      n1.y + n1.h);
+    ctx.lineTo(
+      n2.x + n2.w / 3,
+      n2.y + n2.h);
+    ctx.lineTo(
+      n2.x + n2.w * 2 / 3,
+      n2.y + n2.h);
+    ctx.lineTo(
+      n1.x + n1.w * 2 / 3,
+      n1.y + n1.h);
+    ctx.closePath();
+    ctx.fill();
   }
 
-  let dur = note[2] / hyperSpeed * h / songSpeed;
+  let n1 = perspectiveMap(x, y, w, h, xp, yp + noteHeight * w / 2);
+  let n2 = perspectiveMap(x, y, w, h, xp, yp - noteHeight * w / 2);
 
-  yp = Math.max(0, ypv - dur);
+  let fillBuffer = ctx.fillStyle;
+  ctx.beginPath();
+  ctx.moveTo(
+    n1.x,
+    n1.y + n1.h);
+  ctx.lineTo(
+    n2.x,
+    n2.y + n2.h);
+  ctx.lineTo(
+    n2.x,
+    n2.y);
+  ctx.lineTo(
+    n2.x + n2.w,
+    n2.y);
+  ctx.lineTo(
+    n2.x + n2.w,
+    n2.y + n2.h);
+  ctx.lineTo(
+    n1.x + n1.w,
+    n1.y + n1.h);
+  ctx.closePath();
+  ctx.rect(n1.x, n1.y, n1.w, n1.h);
+  ctx.fill();
 
-  let n2 = perspectiveMap(x, y, w, h, xp, yp);
+  ctx.fillStyle = '#0005';
+  ctx.fill();
+
+  ctx.fillStyle = fillBuffer;
 
   ctx.beginPath();
   ctx.moveTo(
-    n1.x + n1.w / 3,
-    n1.y + n1.h);
+    n1.x,
+    n1.y);
   ctx.lineTo(
-    n2.x + n2.w / 3,
-    n2.y + n2.h);
+    n2.x,
+    n2.y);
   ctx.lineTo(
-    n2.x + n2.w * 2 / 3,
-    n2.y + n2.h);
+    n2.x + n2.w,
+    n2.y);
   ctx.lineTo(
-    n1.x + n1.w * 2 / 3,
-    n1.y + n1.h);
+    n1.x + n1.w,
+    n1.y);
   ctx.closePath();
   ctx.fill();
-
-  ctx.fillRect(
-    n1.x,
-    n1.y,
-    n1.w,
-    n1.h);
 }
 
 function drawScorePerspective(x, y, w, h) {
@@ -602,17 +637,16 @@ function drawFretIconsPerspective(x, y, w, h) {
 
   let note = perspectiveMap(x, y, w, h, w / 3, yp);
 
-  ctx.fillRect(note.x, note.y + note.h / 2, note.w * frets, 2);
+  ctx.fillRect(note.x, note.y + note.h, note.w * frets, 2);
 
-  for(let i = 0; i < frets; i++) {
+  for(let i = 0; i < (frets - 1) / 2; i++) {
     if(holdingKeys[lefty ? frets - 1 - i : i]) {
-      ctx.fillStyle = fretPalette[colorPalette][fretColors[colorMode][frets - 1][i]];
-
-      let xp = w / 3 + (i + 0.5) * w / 3 / frets - w / 6 / frets;
-
-      note = perspectiveMap(x, y, w, h, xp, yp);
-
-      ctx.fillRect(note.x, note.y, note.w, note.h);
+      drawNotePerspective([currentTime / 1000 * songSpeed, i, 0], x, y, w, h, false);
+    }
+  }
+  for(let i = frets - 1; i >= (frets - 1) / 2; i--) {
+    if(holdingKeys[lefty ? frets - 1 - i : i]) {
+      drawNotePerspective([currentTime / 1000 * songSpeed, i, 0], x, y, w, h, false);
     }
   }
 }
@@ -667,6 +701,8 @@ function drawPlayChart(x, y, w, h) {
 
   drawLines[highwayType](songs[currentSong][2], x, y, w, h);
 
+  drawTop[highwayType](x, y, w, h);
+
   //[true, currentTime, song.chart[i][1], song.chart[i][0] + song.chart[i][2]]);
   for(let i = 0; i < sustains.length; i++) {
     if(!holdingKeys[sustains[i][2]]) {
@@ -682,12 +718,51 @@ function drawPlayChart(x, y, w, h) {
     drawNote[highwayType]([sustains[i][1], sustains[i][2], sustains[i][3] - sustains[i][1]], x, y, w, h, !sustains[i][0]);
   }
 
-  for(let i = 0; i < songs[currentSong][3].chart.length; i++) {
-    if(drawNote[highwayType](songs[currentSong][3].chart[i], x, y, w, h)) {
-      songs[currentSong][3].chart.splice(i, 1);
-      i--;
-      streak = 0;
-      FC = false;
+  if(highwayType === 2) {
+    let noteQueue = [];
+    for(let i = 0; i < songs[currentSong][3].chart.length; i++) {
+      let note = songs[currentSong][3].chart[i];
+      let yp = 0.9 * h - (note[0] / songSpeed - currentTime / 1000) / hyperSpeed * h;
+      if(currentTime / 1000 - hitWindow > note[0] / songSpeed && lastTime / 1000 - hitWindow <= note[0] / songSpeed) {
+        noteQueue.push([i, note[0], Math.abs(note[1] + 0.5 - frets / 2), true]);
+      }
+      else if(yp >= -w / 18 / frets && yp <= h + w / 18 / frets){
+        noteQueue.push([i, note[0], Math.abs(note[1] + 0.5 - frets / 2), false]);
+      }
+    }
+
+    noteQueue.sort((a, b) => a[1] !== b[1] ? b[1] - a[1] : b[2] - a[2]);
+
+    //console.log(noteQueue);
+
+    let spliceQueue = [];
+
+    for(let i = 0; i < noteQueue.length; i++) {
+      if(drawNote[highwayType](songs[currentSong][3].chart[noteQueue[i][0]], x, y, w, h)) {
+        spliceQueue.push(noteQueue[i][0]);
+        streak = 0;
+        FC = false;
+      }
+    }
+
+    spliceQueue.sort((a, b) => b - a);
+
+    if(spliceQueue.length > 0){
+      console.log(spliceQueue);
+    }
+
+    for(let i = 0; i < spliceQueue.length; i++) {
+      songs[currentSong][3].chart.splice(spliceQueue[i], 1);
+    }
+
+  } else {
+    for(let i = 0; i < songs[currentSong][3].chart.length; i++) {
+      if(drawNote[highwayType](songs[currentSong][3].chart[i], x, y, w, h)) {
+        songs[currentSong][3].chart.splice(i, 1);
+        i--;
+        streak = 0;
+        FC = false;
+      }
     }
   }
 
@@ -712,8 +787,6 @@ function drawPlayChart(x, y, w, h) {
     addHighScore();
     saveCookie();
   }
-
-  drawTop[highwayType](x, y, w, h);
 
   ctx.fillStyle = colors[0];
   ctx.fillRect(x, 0, w, y);
