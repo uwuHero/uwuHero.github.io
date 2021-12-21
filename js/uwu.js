@@ -1,5 +1,5 @@
 let dev = true;
-let version = "0.2.0";
+let version = "0.2.1";
 
 const colors = ["#242729", "grey", "#151515", "white", "blue"];
 
@@ -423,7 +423,7 @@ document.onkeyup = (event) => {
 
 document.body.onblur = (event) => {
   if(scene === 4) {
-    //sb = 6;
+    sb = 6;
   }
 }
 
