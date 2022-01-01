@@ -11,50 +11,96 @@ player.loader.decodeAfterLoading(audioContext, '_tone_0180_Chaos_sf2_file');
 player.loader.decodeAfterLoading(audioContext, '_tone_0640_Aspirin_sf2_file');
 player.loader.decodeAfterLoading(audioContext, '_tone_0570_Aspirin_sf2_file');
 player.loader.decodeAfterLoading(audioContext, '_tone_0560_Aspirin_sf2_file');
+player.loader.decodeAfterLoading(audioContext, '_tone_0400_Aspirin_sf2_file');
+player.loader.decodeAfterLoading(audioContext, '_tone_0470_Aspirin_sf2_file');
+player.loader.decodeAfterLoading(audioContext, '_tone_0420_Aspirin_sf2_file');
+player.loader.decodeAfterLoading(audioContext, '_tone_0730_Aspirin_sf2_file');
+player.loader.decodeAfterLoading(audioContext, '_tone_0740_Aspirin_sf2_file');
+player.loader.decodeAfterLoading(audioContext, '_tone_1170_Aspirin_sf2_file');
+player.loader.decodeAfterLoading(audioContext, '_tone_1160_Aspirin_sf2_file');
+player.loader.decodeAfterLoading(audioContext, '_tone_1140_Aspirin_sf2_file');
+player.loader.decodeAfterLoading(audioContext, '_tone_1050_FluidR3_GM_sf2_file');
+player.loader.decodeAfterLoading(audioContext, '_tone_0710_Aspirin_sf2_file');
+player.loader.decodeAfterLoading(audioContext, '_tone_0610_Aspirin_sf2_file');
 
 function soundfontVariable(family, name) {
   switch (family) {
     case 'synth lead':
       return _tone_0800_Aspirin_sf2_file;
-      break;
     case 'bass':
     case 'guitar':
       switch (name) {
         case 'electric guitar (muted)':
           return _tone_0280_Aspirin_sf2_file;
-          break;
-        default: //electric guitar (clean)
+        default: // electric guitar (clean)
           return _tone_0270_Aspirin_sf2_file;
+      }
+      break;
+    case 'strings':
+      switch (name) {
+        case 'cello':
+          return _tone_0420_Aspirin_sf2_file;
+        case 'timpani':
+          return _tone_0470_Aspirin_sf2_file;
+        default: // violin
+          return _tone_0400_Aspirin_sf2_file;
       }
       break;
     case 'ensemble':
       return _tone_0481_GeneralUserGS_sf2_file;
-      break;
     case 'organ':
       switch (name) {
         case 'reed organ':
           return _tone_0200_SBLive_sf2;
-          break;
-        default: //rock organ
+        default: // rock organ
           return _tone_0180_Chaos_sf2_file;
       }
       break;
-    case "reed":
+    case 'reed':
       switch (name) {
-        case "soprano sax":
-          return _tone_0640_Aspirin_sf2_file;
-        default://soprano sax
+        case 'Bassoon':
+        case 'oboe':
+        case 'english horn':
+        case 'clarinet':
+          return _tone_0710_Aspirin_sf2_file;
+        default: // soprano sax
           return _tone_0640_Aspirin_sf2_file;
       }
       break;
-    case "brass":
+    case 'brass':
       switch (name) {
-        case "trombone":
+        case 'brass section':
+          return _tone_0610_Aspirin_sf2_file;
+        case 'trombone':
           return _tone_0570_Aspirin_sf2_file;
-        default://trumpet
+        default: // trumpet
           return _tone_0560_Aspirin_sf2_file;
       }
       break;
+    case 'pipe':
+      switch (name) {
+        case 'recorder':
+          return _tone_0740_Aspirin_sf2_file;
+        default: // flute
+          return _tone_0730_Aspirin_sf2_file;
+      }
+      break;
+    case 'percussive':
+      switch (name) {
+        case 'melodic tom':
+          return _tone_1170_Aspirin_sf2_file;
+        case 'taiko drum':
+          return _tone_1160_Aspirin_sf2_file;
+        default: // steel drum
+          return _tone_1140_Aspirin_sf2_file;
+      }
+      break;
+    case 'ethnic':
+      switch(name) {
+        default: // banjo
+          return _tone_1050_FluidR3_GM_sf2_file;
+      }
+    break;
     default:
       return _tone_0010_GeneralUserGS_sf2_file;
   }
@@ -76,9 +122,9 @@ function playSound(pitch, duration, vol, family, name) {
       drumSound.volume(vol * 2);
       drumSound.play(pitch - 26 + '');
       break;
-    case "piano":
+    case 'piano':
       switch (name) {
-        case "acoustic grand piano":
+        case 'acoustic grand piano':
           vol /= 2;
       }
       default:

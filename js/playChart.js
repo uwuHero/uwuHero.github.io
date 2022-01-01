@@ -318,7 +318,7 @@ function drawScoreInfo(x, y, w, h) {
   ctx.fillRect(
     x + w * 2 / 3 + w / 64 + w * 0.01,
     y + h / 2 + h * 0.005,
-    (w * 1 / 3 - w / 64 - w * 0.02) * Math.max(0, Math.min(1, currentTime / 1000 / songs[currentSong][2].duration)),
+    (w * 1 / 3 - w / 64 - w * 0.02) * Math.max(0, Math.min(1, currentTime / 1000 / songs[currentSong][2].duration * songSpeed)),
     h * 0.02);
 
   let myScore = 0;
