@@ -1,5 +1,5 @@
 let dev = true;
-let version = "0.2.3";
+let version = "0.2.4";
 
 const colors = ["#242729", "grey", "#151515", "white", "blue"];
 
@@ -221,10 +221,10 @@ function blendColors(color1, color2, factor = 0.5) {
 function callWithinAR(x, y, width, height, ar, callback) {
   if(height * ar < width) {
     //wide
-    callback(x + width / 2 - height / 2 * ar >> 0, y >> 0, height * ar >> 0, height >> 0);
+    callback(((x + width / 2 - height / 2 * ar) >> 0) - 1, (y >> 0) - 1, ((height * ar) >> 0) + 2, (height >> 0) + 3);
   } else {
     //tall
-    callback(x >> 0, y + height / 2 - width / 2 / ar >> 0, width >> 0, width / ar >> 0);
+    callback((x >> 0) - 1, ((y + height / 2 - width / 2 / ar) >> 0) - 1, (width >> 0) + 2, ((width / ar) >> 0) + 3);
   }
 }
 

@@ -640,12 +640,12 @@ function drawFretIconsPerspective(x, y, w, h) {
   ctx.fillRect(note.x, note.y + note.h, note.w * frets, 2);
 
   for(let i = 0; i < (frets - 1) / 2; i++) {
-    if(holdingKeys[lefty ? frets - 1 - i : i]) {
+    if(holdingKeys[i]) {
       drawNotePerspective([currentTime / 1000 * songSpeed, i, 0], x, y, w, h, false);
     }
   }
   for(let i = frets - 1; i >= (frets - 1) / 2; i--) {
-    if(holdingKeys[lefty ? frets - 1 - i : i]) {
+    if(holdingKeys[i]) {
       drawNotePerspective([currentTime / 1000 * songSpeed, i, 0], x, y, w, h, false);
     }
   }
