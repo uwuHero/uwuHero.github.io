@@ -581,6 +581,7 @@ function drawSettings(x, y, w, h) {
     ctx.fillText(binding === (lefty ? frets - 1 - i : i) ? '' : keyName(keyBindings.notes[lefty ? frets - 1 - i : i]),
       x + w * (i + 0.5) / frets,
       y + h * 0.965);
+    ctx.textAlign = 'left';
   }
   ctx.fillStyle = '#fff';
   for(let i = 1; i <= frets - 1; i++) {
