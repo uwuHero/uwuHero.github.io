@@ -85,6 +85,7 @@ function drawChartSettings(x, y, w, h) {
   ctx.textAlign = 'center';
   ctx.fillStyle = '#fff';
   ctx.fillText(songs[currentSong][1], x + w * 0.8, y + h * 0.25);
+  ctx.textAlign = 'left';
 
   button(
     x + h * 0.05,

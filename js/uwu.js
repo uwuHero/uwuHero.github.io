@@ -251,6 +251,8 @@ function drawCanvas(t) {
   ctx.fillStyle = colors[0];
   ctx.fillRect(0, 0, w, h);
 
+  ctx.textAlign = 'left';
+
   if(sb !== scene) {
     scene = sb;
     scroll = 0;
